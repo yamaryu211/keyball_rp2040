@@ -214,13 +214,13 @@ layer_state_t layer_state_set_user(layer_state_t state) {
             rgblight_sethsv_noeeprom(HSV_WHITE);
             break;
         case 2:
-            rgblight_sethsv_noeeprom(HSV_CORAL);
+            rgblight_sethsv_noeeprom(HSV_GOLD);
             break;
         case 3:
             rgblight_sethsv_noeeprom(HSV_BLUE);
             break;
         case 4:
-            rgblight_sethsv_noeeprom(HSV_GOLD);
+            rgblight_sethsv_noeeprom(HSV_MAGENTA);
             break;            
     }
 
