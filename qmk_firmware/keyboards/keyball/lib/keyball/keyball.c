@@ -133,6 +133,12 @@ static void add_scroll_div(int8_t delta) {
     keyball_set_scroll_div(v < 1 ? 1 : v);
 }
 
+// マウスカーソルの挙動の調整用
+static uint16_t movement_size_of(report_mouse_t *rep) {
+    return abs(rep->x) + abs(rep->y);
+}
+
+
 //////////////////////////////////////////////////////////////////////////////
 // Pointing device driver
 
@@ -262,7 +268,6 @@ __attribute__((weak)) void keyball_on_apply_motion_to_mouse_scroll(keyball_motio
             break;
     }
 #endif
-}
 
 // --- ここから追記 ---
     // windowsOSでスクロール方向反転
@@ -271,6 +276,8 @@ __attribute__((weak)) void keyball_on_apply_motion_to_mouse_scroll(keyball_motio
         r->v = -r->v;
     }
 // --- ここまで追記 ---
+}
+
 
 static void motion_to_mouse(keyball_motion_t *m, report_mouse_t *r, bool is_left, bool as_scroll) {
     if (as_scroll) {
