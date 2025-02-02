@@ -42,7 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_TERM 180
 #define PERMISSIVE_HOLD
-#define QUICK_TAP_TERM 0
+#define QUICK_TAP_TERM 150
 #define QUICK_TAP_TERM_PER_KEY
 #define AUTO_MOUSE_TIME 450  /* マウスが止まってから元のレイヤーに戻るまでの時間(ms) */
 // for CAPS WORD
