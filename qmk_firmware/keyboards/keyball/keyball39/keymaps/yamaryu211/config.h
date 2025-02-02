@@ -73,6 +73,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KEYBALL_SCROLL_DIV_DEFAULT 5 // スクロール速度 (default: 4)
 #define KEYBALL_CPI_DEFAULT 900 // マウス速度 (default: 500)
 
+// バックライトのBreathingエフェクトの最大輝度を50に設定
+#define RGBLIGHT_EFFECT_BREATHE_MAX 50
+
 // バックライトの初期値
 // #define RGBLIGHT_DEFAULT_HUE 142          // バックライトの初期値
 // #define RGBLIGHT_DEFAULT_SAT 0          // 〃
