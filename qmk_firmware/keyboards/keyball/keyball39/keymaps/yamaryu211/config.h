@@ -42,6 +42,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define TAPPING_TERM 180
 #define PERMISSIVE_HOLD
+// タップ→ホールドしたときにタップしたキーコードを連続送信するための待受時間
 #define QUICK_TAP_TERM 150
 #define QUICK_TAP_TERM_PER_KEY
 #define AUTO_MOUSE_TIME 450  /* マウスが止まってから元のレイヤーに戻るまでの時間(ms) */
