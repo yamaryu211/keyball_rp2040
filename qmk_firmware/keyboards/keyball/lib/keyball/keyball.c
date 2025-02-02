@@ -23,6 +23,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "keyball.h"
 #include "drivers/pmw3360/pmw3360.h"
 
+// OS判別用に追加
+#include "os_detection.h"
+
 #include <string.h>
 
 const uint8_t CPI_DEFAULT    = KEYBALL_CPI_DEFAULT / 100;
@@ -166,6 +169,31 @@ void pointing_device_driver_set_cpi(uint16_t cpi) {
     keyball_set_cpi(cpi);
 }
 
+static void adjust_mouse_speed(report_mouse_t *r) {
+    uint16_t movement_size = movement_size_of(r);
+
+    float speed_factor = 1.0;
+    if (movement_size > 60) {
+        speed_factor = 3.0;
+    } else if (movement_size > 30) {
+        speed_factor = 1.5;
+    } else if (movement_size > 5) {
+        speed_factor = 1.0;
+    } else if (movement_size > 4) {
+        speed_factor = 0.9;
+    } else if (movement_size > 3) {
+        speed_factor = 0.7;
+    } else if (movement_size > 2) {
+        speed_factor = 0.5;
+    } else if (movement_size > 1) {
+        speed_factor = 0.2;
+    }
+
+    r->x = clip2int8(r->x * speed_factor);
+    r->y = clip2int8(r->y * speed_factor);
+}
+
+
 __attribute__((weak)) void keyball_on_apply_motion_to_mouse_move(keyball_motion_t *m, report_mouse_t *r, bool is_left) {
 #if KEYBALL_MODEL == 61 || KEYBALL_MODEL == 39 || KEYBALL_MODEL == 147 || KEYBALL_MODEL == 44
     r->x = clip2int8(m->y);
@@ -180,6 +208,7 @@ __attribute__((weak)) void keyball_on_apply_motion_to_mouse_move(keyball_motion_
 #else
 #    error("unknown Keyball model")
 #endif
+    adjust_mouse_speed(r); // マウスカーソルの挙動を調整
     // clear motion
     m->x = 0;
     m->y = 0;
@@ -234,6 +263,14 @@ __attribute__((weak)) void keyball_on_apply_motion_to_mouse_scroll(keyball_motio
     }
 #endif
 }
+
+// --- ここから追記 ---
+    // windowsOSでスクロール方向反転
+    if (detected_host_os() == OS_WINDOWS || detected_host_os() == OS_LINUX){
+        r->h = -r->h;
+        r->v = -r->v;
+    }
+// --- ここまで追記 ---
 
 static void motion_to_mouse(keyball_motion_t *m, report_mouse_t *r, bool is_left, bool as_scroll) {
     if (as_scroll) {
