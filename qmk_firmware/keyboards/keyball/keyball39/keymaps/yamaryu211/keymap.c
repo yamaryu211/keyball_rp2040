@@ -227,6 +227,7 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
+// OLEDの表示内容のカスタマイズ
 #ifdef OLED_ENABLE
 
 #    include "lib/oledkit/oledkit.h"
@@ -306,13 +307,33 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
     oled_write_char(to_1x(keyball.last_kc), false);
 
-    // indicate jis mode: on/off
-    oled_write_P(PSTR(" JP"), false);
-    if (is_jis_mode()) {
-        oled_write_P(LFSTR_ON, false);
-    } else {
-        oled_write_P(LFSTR_OFF, false);
+    // 接続先OS情報の表示
+    oled_write_P(PSTR(" OS"), false);
+    switch (detected_host_os()) {
+        case OS_MACOS:
+            oled_write_P(PSTR("Mac"), false);
+            break;
+        case OS_WINDOWS:
+            oled_write_P(PSTR("Win"), false);
+            break;
+        case OS_LINUX:
+            oled_write_P(PSTR("Lin"), false);
+            break;
+        case IOS:
+            oled_write_P(PSTR("iOS"), false);
+            break;
+        default:
+            oled_write_P(PSTR("---"), false);
+            break;
     }
+
+    // // indicate jis mode: on/off
+    // oled_write_P(PSTR(" JP"), false);
+    // if (is_jis_mode()) {
+    //     oled_write_P(LFSTR_ON, false);
+    // } else {
+    //     oled_write_P(LFSTR_OFF, false);
+    // }
 }
 
 void keyball_oled_render_ballinfo_custom(void) {
@@ -326,16 +347,16 @@ void keyball_oled_render_ballinfo_custom(void) {
     oled_write_P(PSTR("Ball\xB1"), false);
     oled_write(format_4d(keyball.last_mouse.x), false);
     oled_write(format_4d(keyball.last_mouse.y), false);
-//    oled_write(format_4d(keyball.last_mouse.h), false);
-//    oled_write(format_4d(keyball.last_mouse.v), false);
+    oled_write(format_4d(keyball.last_mouse.h), false);
+    oled_write(format_4d(keyball.last_mouse.v), false);
 
-    // indicate Caps Word mode: on/off
-    oled_write_P(PSTR("    CW"), false);
-    if (is_caps_word_on()) {
-        oled_write_P(LFSTR_ON, false);
-    } else {
-        oled_write_P(LFSTR_OFF, false);
-    }
+    // // indicate Caps Word mode: on/off
+    // oled_write_P(PSTR("    CW"), false);
+    // if (is_caps_word_on()) {
+    //     oled_write_P(LFSTR_ON, false);
+    // } else {
+    //     oled_write_P(LFSTR_OFF, false);
+    // }
 
     // 2nd line, empty label and CPI
     oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
