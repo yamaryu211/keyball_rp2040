@@ -322,7 +322,7 @@ void keyball_oled_render_keyinfo_custom(void) {
         case OS_LINUX:
             oled_write_P(PSTR("Lin"), false);
             break;
-        case IOS:
+        case OS_IOS:
             oled_write_P(PSTR("iOS"), false);
             break;
         default:
