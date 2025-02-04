@@ -227,186 +227,185 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     return state;
 }
 
-// OLED表示のカスタム用→とりあえずデフォルト運用のままとするためコメントアウト
-// #ifdef OLED_ENABLE
+#ifdef OLED_ENABLE
 
-// #    include "lib/oledkit/oledkit.h"
+#    include "lib/oledkit/oledkit.h"
 
-// // [CUSTOM]
-// static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
-// static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
-// static bool jis_mode = false;
+// [CUSTOM]
+static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
+static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
+static bool jis_mode = false;
 
-// bool is_jis_mode(void) {
-//   return jis_mode;
-// }
+bool is_jis_mode(void) {
+  return jis_mode;
+}
 
-// void set_jis_mode(bool is_jis_mode) {
-//   jis_mode = is_jis_mode;
-// }
+void set_jis_mode(bool is_jis_mode) {
+  jis_mode = is_jis_mode;
+}
 
-// static const char *format_4d(int8_t d) {
-//     static char buf[5] = {0}; // max width (4) + NUL (1)
-//     char        lead   = ' ';
-//     if (d < 0) {
-//         d    = -d;
-//         lead = '-';
-//     }
-//     buf[3] = (d % 10) + '0';
-//     d /= 10;
-//     if (d == 0) {
-//         buf[2] = lead;
-//         lead   = ' ';
-//     } else {
-//         buf[2] = (d % 10) + '0';
-//         d /= 10;
-//     }
-//     if (d == 0) {
-//         buf[1] = lead;
-//         lead   = ' ';
-//     } else {
-//         buf[1] = (d % 10) + '0';
-//         d /= 10;
-//     }
-//     buf[0] = lead;
-//     return buf;
-// }
+static const char *format_4d(int8_t d) {
+    static char buf[5] = {0}; // max width (4) + NUL (1)
+    char        lead   = ' ';
+    if (d < 0) {
+        d    = -d;
+        lead = '-';
+    }
+    buf[3] = (d % 10) + '0';
+    d /= 10;
+    if (d == 0) {
+        buf[2] = lead;
+        lead   = ' ';
+    } else {
+        buf[2] = (d % 10) + '0';
+        d /= 10;
+    }
+    if (d == 0) {
+        buf[1] = lead;
+        lead   = ' ';
+    } else {
+        buf[1] = (d % 10) + '0';
+        d /= 10;
+    }
+    buf[0] = lead;
+    return buf;
+}
 
-// static char to_1x(uint8_t x) {
-//     x &= 0x0f;
-//     return x < 10 ? x + '0' : x + 'a' - 10;
-// }
+static char to_1x(uint8_t x) {
+    x &= 0x0f;
+    return x < 10 ? x + '0' : x + 'a' - 10;
+}
 
-// void keyball_oled_render_keyinfo_custom(void) {
-//     // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
-//     //
-//     // Where `kc` is 16 bit of keycode.
-//     //
-//     // `row`, `col`, and `kc` indicates the last processed key,
-//     // but `name`s indicate unreleased keys in best effort.
-//     //
-//     // It is aligned to fit with output of keyball_oled_render_ballinfo().
-//     // For example:
-//     //
-//     //     Key :  R2  C3 K06 CW on/off
-//     //     Ball:   0   0   0   0
+void keyball_oled_render_keyinfo_custom(void) {
+    // Format: `Key :  R{row}  C{col} K{kc} CW on/off`
+    //
+    // Where `kc` is 16 bit of keycode.
+    //
+    // `row`, `col`, and `kc` indicates the last processed key,
+    // but `name`s indicate unreleased keys in best effort.
+    //
+    // It is aligned to fit with output of keyball_oled_render_ballinfo().
+    // For example:
+    //
+    //     Key :  R2  C3 K06 CW on/off
+    //     Ball:   0   0   0   0
 
-//     // "Key" Label
-//     oled_write_P(PSTR("Key \xB1"), false);
+    // "Key" Label
+    oled_write_P(PSTR("Key \xB1"), false);
 
-//     // Row and column
-//     oled_write_char('\xB8', false);
-//     oled_write_char(to_1x(keyball.last_pos.row), false);
-//     oled_write_char('\xB9', false);
-//     oled_write_char(to_1x(keyball.last_pos.col), false);
+    // Row and column
+    oled_write_char('\xB8', false);
+    oled_write_char(to_1x(keyball.last_pos.row), false);
+    oled_write_char('\xB9', false);
+    oled_write_char(to_1x(keyball.last_pos.col), false);
 
-//     // Keycode
-//     oled_write_P(PSTR("\xBA\xBB:"), false);
-//     oled_write_char(to_1x(keyball.last_kc >> 12), false);
-//     oled_write_char(to_1x(keyball.last_kc >> 8), false);
-//     oled_write_char(to_1x(keyball.last_kc >> 4), false);
-//     oled_write_char(to_1x(keyball.last_kc), false);
+    // Keycode
+    oled_write_P(PSTR("\xBA\xBB:"), false);
+    oled_write_char(to_1x(keyball.last_kc >> 12), false);
+    oled_write_char(to_1x(keyball.last_kc >> 8), false);
+    oled_write_char(to_1x(keyball.last_kc >> 4), false);
+    oled_write_char(to_1x(keyball.last_kc), false);
 
-//     // indicate jis mode: on/off
-//     oled_write_P(PSTR(" JP"), false);
-//     if (is_jis_mode()) {
-//         oled_write_P(LFSTR_ON, false);
-//     } else {
-//         oled_write_P(LFSTR_OFF, false);
-//     }
-// }
+    // indicate jis mode: on/off
+    oled_write_P(PSTR(" JP"), false);
+    if (is_jis_mode()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+}
 
-// void keyball_oled_render_ballinfo_custom(void) {
-//     // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
-//     //
-//     // Output example:
-//     //
-//     //     Ball: -12  34   0   0
+void keyball_oled_render_ballinfo_custom(void) {
+    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
+    //
+    // Output example:
+    //
+    //     Ball: -12  34   0   0
 
-//     // 1st line, "Ball" label, mouse x, y, h, and v.
-//     oled_write_P(PSTR("Ball\xB1"), false);
-//     oled_write(format_4d(keyball.last_mouse.x), false);
-//     oled_write(format_4d(keyball.last_mouse.y), false);
-// //    oled_write(format_4d(keyball.last_mouse.h), false);
-// //    oled_write(format_4d(keyball.last_mouse.v), false);
+    // 1st line, "Ball" label, mouse x, y, h, and v.
+    oled_write_P(PSTR("Ball\xB1"), false);
+    oled_write(format_4d(keyball.last_mouse.x), false);
+    oled_write(format_4d(keyball.last_mouse.y), false);
+//    oled_write(format_4d(keyball.last_mouse.h), false);
+//    oled_write(format_4d(keyball.last_mouse.v), false);
 
-//     // indicate Caps Word mode: on/off
-//     oled_write_P(PSTR("    CW"), false);
-//     if (is_caps_word_on()) {
-//         oled_write_P(LFSTR_ON, false);
-//     } else {
-//         oled_write_P(LFSTR_OFF, false);
-//     }
+    // indicate Caps Word mode: on/off
+    oled_write_P(PSTR("    CW"), false);
+    if (is_caps_word_on()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
 
-//     // 2nd line, empty label and CPI
-//     oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
-//     oled_write(format_4d(keyball_get_cpi()) + 1, false);
-//     oled_write_P(PSTR("00 "), false);
+    // 2nd line, empty label and CPI
+    oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
+    oled_write(format_4d(keyball_get_cpi()) + 1, false);
+    oled_write_P(PSTR("00 "), false);
 
-//     // indicate scroll snap mode: "VT" (vertical), "HN" (horiozntal), and "SCR" (free)
-// #if 1 && KEYBALL_SCROLLSNAP_ENABLE == 2
-//     switch (keyball_get_scrollsnap_mode()) {
-//         case KEYBALL_SCROLLSNAP_MODE_VERTICAL:
-//             oled_write_P(PSTR("VT"), false);
-//             break;
-//         case KEYBALL_SCROLLSNAP_MODE_HORIZONTAL:
-//             oled_write_P(PSTR("HO"), false);
-//             break;
-//         default:
-//             oled_write_P(PSTR("\xBE\xBF"), false);
-//             break;
-//     }
-// #else
-//     oled_write_P(PSTR("\xBE\xBF"), false);
-// #endif
-//     // indicate scroll mode: on/off
-//     if (keyball.scroll_mode) {
-//         oled_write_P(LFSTR_ON, false);
-//     } else {
-//         oled_write_P(LFSTR_OFF, false);
-//     }
+    // indicate scroll snap mode: "VT" (vertical), "HN" (horiozntal), and "SCR" (free)
+#if 1 && KEYBALL_SCROLLSNAP_ENABLE == 2
+    switch (keyball_get_scrollsnap_mode()) {
+        case KEYBALL_SCROLLSNAP_MODE_VERTICAL:
+            oled_write_P(PSTR("VT"), false);
+            break;
+        case KEYBALL_SCROLLSNAP_MODE_HORIZONTAL:
+            oled_write_P(PSTR("HO"), false);
+            break;
+        default:
+            oled_write_P(PSTR("\xBE\xBF"), false);
+            break;
+    }
+#else
+    oled_write_P(PSTR("\xBE\xBF"), false);
+#endif
+    // indicate scroll mode: on/off
+    if (keyball.scroll_mode) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
 
-//     // indicate scroll divider:
-//     oled_write_P(PSTR(" \xC0\xC1"), false);
-//     oled_write_char('0' + keyball_get_scroll_div(), false);
-// }
+    // indicate scroll divider:
+    oled_write_P(PSTR(" \xC0\xC1"), false);
+    oled_write_char('0' + keyball_get_scroll_div(), false);
+}
 
+#ifdef DYNAMIC_MACRO_ENABLE
+// Dynamic Macros: Record and Replay Macros in Runtime
+// https://github.com/qmk/qmk_firmware/blob/master/docs/feature_dynamic_macros.md
+
+bool isRecording = false;
+// Triggered when you start recording a macro.
+void dynamic_macro_record_start_user(int8_t direction) {
+    isRecording = true;
+}
+
+// Triggered when you play back a macro.
+void dynamic_macro_play_user(int8_t direction) {
+}
+
+// Triggered on each keypress while recording a macro.
+void dynamic_macro_record_key_user(int8_t direction, keyrecord_t *record) {
+}
+
+// Triggered when the macro recording is stopped.
+void dynamic_macro_record_end_user(int8_t direction) {
+    isRecording = false;
+}
+#endif
+
+void oledkit_render_info_user(void) {
+//    keyball_oled_render_keyinfo();
+    keyball_oled_render_keyinfo_custom();
+//    keyball_oled_render_ballinfo();
+    keyball_oled_render_ballinfo_custom();
+    keyball_oled_render_layerinfo();
 // #ifdef DYNAMIC_MACRO_ENABLE
-// // Dynamic Macros: Record and Replay Macros in Runtime
-// // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_dynamic_macros.md
-
-// bool isRecording = false;
-// // Triggered when you start recording a macro.
-// void dynamic_macro_record_start_user(int8_t direction) {
-//     isRecording = true;
-// }
-
-// // Triggered when you play back a macro.
-// void dynamic_macro_play_user(int8_t direction) {
-// }
-
-// // Triggered on each keypress while recording a macro.
-// void dynamic_macro_record_key_user(int8_t direction, keyrecord_t *record) {
-// }
-
-// // Triggered when the macro recording is stopped.
-// void dynamic_macro_record_end_user(int8_t direction) {
-//     isRecording = false;
-// }
+//     oled_write_P(PSTR("\n"), false);
+//     oled_write_P(isRecording ? PSTR("[REC]") : PSTR("[   ]"), isRecording);
 // #endif
-
-// void oledkit_render_info_user(void) {
-// //    keyball_oled_render_keyinfo();
-//     keyball_oled_render_keyinfo_custom();
-// //    keyball_oled_render_ballinfo();
-//     keyball_oled_render_ballinfo_custom();
-//     keyball_oled_render_layerinfo();
-// // #ifdef DYNAMIC_MACRO_ENABLE
-// //     oled_write_P(PSTR("\n"), false);
-// //     oled_write_P(isRecording ? PSTR("[REC]") : PSTR("[   ]"), isRecording);
-// // #endif
-// }
-// #endif
+}
+#endif
 
 // [CUSTOM]
 static uint16_t registered_key = KC_NO;
