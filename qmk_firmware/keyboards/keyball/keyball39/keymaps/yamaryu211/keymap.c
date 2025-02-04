@@ -311,7 +311,7 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_kc), false);
 
     // 接続先OS情報の表示
-    oled_write_P(PSTR(" OS"), false);
+    oled_write_P(PSTR("  "), false);
     switch (detected_host_os()) {
         case OS_MACOS:
             oled_write_P(PSTR("Mac"), false);
