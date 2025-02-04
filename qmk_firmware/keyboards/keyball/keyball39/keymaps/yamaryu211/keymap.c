@@ -23,6 +23,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "features/translate_ansi_to_jis.h"
 #include "features/select_word.h"
 
+// OS判別用に追加
+#include "os_detection.h"
+
 enum custom_keycodes {
   MY_MACRO_0 = SAFE_RANGE,  // 0x7E40  User0
   MY_MACRO_1,  // 0x7E41  User1
