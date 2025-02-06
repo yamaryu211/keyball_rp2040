@@ -238,7 +238,6 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // [CUSTOM]
 static const char LFSTR_ON[] PROGMEM = "\xB2\xB3";
 static const char LFSTR_OFF[] PROGMEM = "\xB4\xB5";
-static const char WIN[] PROGMEM = "\xB0\xC4\xC5";
 static bool jis_mode = false;
 
 bool is_jis_mode(void) {
@@ -318,7 +317,7 @@ void keyball_oled_render_keyinfo_custom(void) {
             oled_write_P(PSTR("Mac"), false);
             break;
         case OS_WINDOWS:
-            oled_write_P(PSTR(WIN), false);
+            oled_write_P(PSTR(" \xC4\xC5"), false);
             break;
         case OS_LINUX:
             oled_write_P(PSTR("Lin"), false);
