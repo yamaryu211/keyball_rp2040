@@ -317,7 +317,7 @@ void keyball_oled_render_keyinfo_custom(void) {
             oled_write_P(PSTR("Mac"), false);
             break;
         case OS_WINDOWS:
-            oled_write_P(PSTR("Win"), false);
+            oled_write_P(PSTR(" \xC4\xC5"), false);
             break;
         case OS_LINUX:
             oled_write_P(PSTR("Lin"), false);
