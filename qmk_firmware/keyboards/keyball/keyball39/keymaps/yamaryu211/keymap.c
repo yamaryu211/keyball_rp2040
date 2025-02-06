@@ -326,7 +326,7 @@ void keyball_oled_render_keyinfo_custom(void) {
             oled_write_P(PSTR("iOS"), false);
             break;
         default:
-            oled_write_P(PSTR(" --"), false);
+            oled_write_P(PSTR("---"), false);
             break;
     }
 
