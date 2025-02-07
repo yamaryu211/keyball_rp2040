@@ -222,37 +222,24 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 // Dynamic Macros: Record and Replay Macros in Runtime
 // https://github.com/qmk/qmk_firmware/blob/master/docs/feature_dynamic_macros.md
 
-bool isRecording = false;
-// Triggered when you start recording a macro.
-void dynamic_macro_record_start_user(int8_t direction) {
-    isRecording = true;
-}
+  bool isRecording = false;
+  // Triggered when you start recording a macro.
+  void dynamic_macro_record_start_user(int8_t direction) {
+      isRecording = true;
+  }
 
-// Triggered when you play back a macro.
-void dynamic_macro_play_user(int8_t direction) {
-}
+  // Triggered when you play back a macro.
+  void dynamic_macro_play_user(int8_t direction) {
+  }
 
-// Triggered on each keypress while recording a macro.
-void dynamic_macro_record_key_user(int8_t direction, keyrecord_t *record) {
-}
+  // Triggered on each keypress while recording a macro.
+  void dynamic_macro_record_key_user(int8_t direction, keyrecord_t *record) {
+  }
 
-// Triggered when the macro recording is stopped.
-void dynamic_macro_record_end_user(int8_t direction) {
-    isRecording = false;
-}
-#endif
-
-void oledkit_render_info_user(void) {
-//    keyball_oled_render_keyinfo();
-    keyball_oled_render_keyinfo_custom();
-//    keyball_oled_render_ballinfo();
-    keyball_oled_render_ballinfo_custom();
-    keyball_oled_render_layerinfo();
-// #ifdef DYNAMIC_MACRO_ENABLE
-//     oled_write_P(PSTR("\n"), false);
-//     oled_write_P(isRecording ? PSTR("[REC]") : PSTR("[   ]"), isRecording);
-// #endif
-}
+  // Triggered when the macro recording is stopped.
+  void dynamic_macro_record_end_user(int8_t direction) {
+      isRecording = false;
+  }
 #endif
 
 // TAP DANCE
