@@ -252,10 +252,12 @@ color.h
 
 // デフォルトレイヤーの切り替え
 switch (detected_host_os()) {
-  case OS_WINDOWS || OS_LINUX:
+  case OS_WINDOWS:
+  case OS_LINUX:
     default_layer_set(1UL<<_WINDOWS);
     break;
-  case OS_MACOS || OS_IOS:
+  case OS_MACOS:
+  case OS_IOS:
     default_layer_set(1UL<<_MAC);
     break;
   default:
