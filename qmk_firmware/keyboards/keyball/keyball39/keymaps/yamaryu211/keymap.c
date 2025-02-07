@@ -252,7 +252,8 @@ color.h
 
 // デフォルトレイヤーの切り替え
 void switch_default_layer(void) {
-  switch (detected_host_os()) {
+  os_variant_t os = detected_host_os();
+  switch (os) {
     case OS_WINDOWS:
     case OS_LINUX:
       default_layer_set(1UL<<_WINDOWS);
