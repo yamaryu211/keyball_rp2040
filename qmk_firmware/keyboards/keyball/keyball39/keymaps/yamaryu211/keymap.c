@@ -213,21 +213,22 @@ color.h
 // clang-format on
 
 // デフォルトレイヤーの切り替え
-bool process_detected_host_os_kb(os_variant_t detected_os) {
-    if (!process_detected_host_os_user(detected_os)) {
-        return false;
-    }
-    switch (detected_os) {
+void keyboard_post_init_user(void) {
+  wait_ms(400);
+  switch (detected_host_os()) {
+    case OS_WINDOWS:
+      layer_move(_WIN);
+      break;
     case OS_MACOS:
     case OS_IOS:
-      default_layer_set(1UL<<_MAC);
+      layer_move(_MAC);
+      break;
+    case OS_LINUX:
+      layer_move(_WIN);
       break;
     default:
-      default_layer_set(1UL<<_WINDOWS);
-      break;
+      layer_move(_WIN);
   }
-    
-    return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
