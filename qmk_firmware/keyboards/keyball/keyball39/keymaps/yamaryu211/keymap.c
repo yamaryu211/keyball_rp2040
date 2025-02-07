@@ -110,7 +110,7 @@ void dance_fn_reset(tap_dance_state_t *state, void *user_data);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (yamaryu211)
   [_WINDOWS] = LAYOUT_universal(
-    KC_Q           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
+    TD_Q           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
     LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
@@ -144,7 +144,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
   ),
   [_MAC] = LAYOUT_universal(
-    KC_A           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
+    TD_Q           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
     LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
@@ -181,12 +181,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 // clang-format off
 /*
-  [4] = LAYOUT_universal(
-    RGB_TOG  , AML_TO   , AML_I50  , AML_D50  , _______  ,                                       _______  , _______  , SSNP_HOR , SSNP_VRT , SSNP_FRE ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , SCRL_DVI ,                                       _______  , _______  , _______  , _______  , _______  ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , SCRL_DVD ,                                       CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
-    QK_BOOT  , KBC_RST  , _______  , _______  , _______  , _______  ,                            _______  , _______  , _______  , _______  , KBC_RST  , QK_BOOT
-  ),
 
 color.h
 
@@ -339,8 +333,39 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
     oled_write_char(to_1x(keyball.last_kc), false);
 
+    // indicate jis mode: on/off
+    oled_write_P(PSTR(" JP"), false);
+    if (is_jis_mode()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+}
+
+void keyball_oled_render_ballinfo_custom(void) {
+    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
+    //
+    // Output example:
+    //
+    //     Ball: -12  34   0   0
+
+    // 1st line, "Ball" label, mouse x, y, h, and v.
+    oled_write_P(PSTR("Ball\xB1"), false);
+    oled_write(format_4d(keyball.last_mouse.x), false);
+    oled_write(format_4d(keyball.last_mouse.y), false);
+    // oled_write(format_4d(keyball.last_mouse.h), false);
+    // oled_write(format_4d(keyball.last_mouse.v), false);
+
+    // indicate Caps Word mode: on/off
+    oled_write_P(PSTR("    CW"), false);
+    if (is_caps_word_on()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+
+    // 2nd line, empty label and CPI
     // 接続先OS情報の表示
-    oled_write_P(PSTR("  "), false);
     switch (detected_host_os()) {
         case OS_MACOS:
             oled_write_P(PSTR("Mac"), false);
@@ -358,40 +383,7 @@ void keyball_oled_render_keyinfo_custom(void) {
             oled_write_P(PSTR("---"), false);
             break;
     }
-
-    // // indicate jis mode: on/off
-    // oled_write_P(PSTR(" JP"), false);
-    // if (is_jis_mode()) {
-    //     oled_write_P(LFSTR_ON, false);
-    // } else {
-    //     oled_write_P(LFSTR_OFF, false);
-    // }
-}
-
-void keyball_oled_render_ballinfo_custom(void) {
-    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
-    //
-    // Output example:
-    //
-    //     Ball: -12  34   0   0
-
-    // 1st line, "Ball" label, mouse x, y, h, and v.
-    oled_write_P(PSTR("Ball\xB1"), false);
-    oled_write(format_4d(keyball.last_mouse.x), false);
-    oled_write(format_4d(keyball.last_mouse.y), false);
-    oled_write(format_4d(keyball.last_mouse.h), false);
-    oled_write(format_4d(keyball.last_mouse.v), false);
-
-    // // indicate Caps Word mode: on/off
-    // oled_write_P(PSTR("    CW"), false);
-    // if (is_caps_word_on()) {
-    //     oled_write_P(LFSTR_ON, false);
-    // } else {
-    //     oled_write_P(LFSTR_OFF, false);
-    // }
-
-    // 2nd line, empty label and CPI
-    oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
+    oled_write_P(PSTR(" \xB1\xBC\xBD"), false);
     oled_write(format_4d(keyball_get_cpi()) + 1, false);
     oled_write_P(PSTR("00 "), false);
 
@@ -630,6 +622,8 @@ tap_dance_action_t tap_dance_actions[] = {
   const uint16_t PROGMEM combo_left_click3[] = {LT(1, KC_T), LT(2, KC_N), COMBO_END};
   const uint16_t PROGMEM combo_right_click3[] = {LT(2, KC_N), MT(MOD_LALT, KC_S), COMBO_END};
   const uint16_t PROGMEM combo_middle_click3[] = {LT(1, KC_T), MT(MOD_LALT, KC_S), COMBO_END};
+  // タップダンスとの組み合わせ
+  const uint16_t PROGMEM combo_td_esc[] = {TD(TD_Q), KC_W, COMBO_END};
 
   combo_t key_combos[] = {
       COMBO(combo_esc, KC_ESC),
@@ -650,6 +644,7 @@ tap_dance_action_t tap_dance_actions[] = {
       COMBO(combo_tab_alt, KC_TAB),
       COMBO(combo_tab2_alt, KC_TAB),
       COMBO(combo_tab3_alt, KC_TAB),
+      COMBO(combo_td_esc, KC_ESC)
   };
 #endif
 
