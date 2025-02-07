@@ -177,6 +177,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
   ),
+};
 
 // clang-format off
 /*
