@@ -219,17 +219,17 @@ void keyboard_post_init_user() {
   os_variant_t os = detected_host_os();
   switch (os) {
     case OS_WINDOWS:
-      default_layer_set(1UL << _WIN);
+      default_layer_set(1UL << _WINDOWS);
       break;
     case OS_MACOS:
     case OS_IOS:
       default_layer_set(1UL << _MAC);
       break;
     case OS_LINUX:
-      default_layer_set(1UL << _WIN);
+      default_layer_set(1UL << _WINDOWS);
       break;
     default:
-      default_layer_set(1UL << _WIN);
+      default_layer_set(1UL << _WINDOWS);
   }
 }
 
