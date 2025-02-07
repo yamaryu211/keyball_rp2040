@@ -451,7 +451,25 @@ void keyball_oled_render_ballinfo(void) {
     oled_write(format_4d(keyball.last_mouse.v), false);
 
     // 2nd line, empty label and CPI
-    oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
+    // 接続先OS情報の表示
+    switch (detected_host_os()) {
+        case OS_MACOS:
+            oled_write_P(PSTR("Mac"), false);
+            break;
+        case OS_WINDOWS:
+            oled_write_P(PSTR("Win"), false);
+            break;
+        case OS_LINUX:
+            oled_write_P(PSTR("Lin"), false);
+            break;
+        case OS_IOS:
+            oled_write_P(PSTR("iOS"), false);
+            break;
+        default:
+            oled_write_P(PSTR("---"), false);
+            break;
+    }
+    oled_write_P(PSTR(" \xB1\xBC\xBD"), false);
     oled_write(format_4d(keyball_get_cpi()) + 1, false);
     oled_write_P(PSTR("00 "), false);
 
