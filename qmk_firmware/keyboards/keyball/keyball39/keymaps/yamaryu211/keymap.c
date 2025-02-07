@@ -26,6 +26,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // OS判別用に追加
 #include "os_detection.h"
 
+// レイヤー定義
+#define _WINDOWS 0
+#define _LOWER_W 1
+#define _RAISE_W 2
+#define _ADJUST_W 3
+#define _KEYBOARD_W 4
+#define _MAC 5
+#define _LOWER_M 6
+#define _RAISE_M 7
+#define _ADJUST_M 8
+#define _KEYBOARD_M 9
+
 enum custom_keycodes {
   MY_MACRO_0 = SAFE_RANGE,  // 0x7E40  User0
   MY_MACRO_1,  // 0x7E41  User1
@@ -97,35 +109,69 @@ void dance_fn_reset(tap_dance_state_t *state, void *user_data);
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (yamaryu211)
-  [0] = LAYOUT_universal(
+  [_WINDOWS] = LAYOUT_universal(
     KC_Q           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
     LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
   ),
 
-  [1] = LAYOUT_universal(
+  [_LOWER_W] = LAYOUT_universal(
     KC_KP_SLASH , KC_7    , KC_8       , KC_9       , KC_KP_ASTERISK ,                      KC_ESC  , KC_NO   , KC_NO    , KC_NO            , LALT(KC_PSCR) ,
     KC_KP_MINUS , KC_4    , KC_5       , KC_6       , KC_KP_PLUS     ,                      KC_LEFT , KC_DOWN , KC_UP    , LALT_T(KC_RIGHT) , _______       ,
     KC_0        , KC_1    , KC_2       , KC_3       , KC_EQUAL       ,                      KC_HOME , KC_PGDN , KC_PGUP  , KC_END           , _______       ,
     MO(4)       , _______ , S(KC_LGUI) , S(KC_LALT) , S(KC_LCTL)     , _______  , _______ , _______ , _______ , _______  , _______          , MO(4)
   ),
 
-  [2] = LAYOUT_universal(
+  [_RAISE_W] = LAYOUT_universal(
     KC_QUOT , S(KC_QUOT) , S(KC_1)    , S(KC_SLSH) , S(KC_GRAVE) ,                     KC_BSLS , S(KC_LBRC) , S(KC_RBRC) , KC_NO      , S(KC_5)  ,
     S(KC_2) , KC_SCLN    , S(KC_4)    , S(KC_COMM) , S(KC_DOT)   ,                     S(KC_3) , S(KC_9)    , S(KC_0)    , S(KC_BSLS) , KC_EQUAL ,
     KC_NO   , S(KC_8)    , S(KC_SCLN) , S(KC_6)    , KC_GRAVE    ,                     S(KC_7) , KC_LBRC    , KC_RBRC    , KC_NO      , KC_SLSH  ,
     _______ , _______    , _______    , _______    , _______     , _______ , _______ , _______ , _______    , _______    , _______    , _______
   ),
 
-  [3] = LAYOUT_universal(
+  [_ADJUST_W] = LAYOUT_universal(
     KC_F10  , KC_F7       , KC_F8   , KC_F9   , KC_NO   ,                     LGUI(KC_TAB) , LCTL(KC_PGUP)   , LCTL(KC_PGDN)  , KC_NO      , LSG(KC_S) ,
     KC_F11  , KC_F4       , KC_F5   , KC_F6   , KC_NO   ,                     LCTL(KC_W)   , LCTL(S(KC_TAB)) , LCTL(KC_TAB)   , LCTL(KC_T) , KC_NO     ,
     KC_F12  , LCTL(KC_F1) , KC_F2   , KC_F3   , KC_NO   ,                     KC_NO        , LALT(KC_LEFT)   , LALT(KC_RIGHT) , KC_NO      , KC_NO     ,
     _______ , _______     , _______ , _______ , _______ , _______ , _______ , _______      , _______         , _______        , _______    , _______
   ),
   // 追加レイヤーの定義
-  [4] = LAYOUT_universal(
+  [_KEYBOARD_W] = LAYOUT_universal(
+    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
+    CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
+  ),
+  [_MAC] = LAYOUT_universal(
+    KC_A           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
+    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
+    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
+  ),
+
+  [_LOWER_M] = LAYOUT_universal(
+    KC_KP_SLASH , KC_7    , KC_8       , KC_9       , KC_KP_ASTERISK ,                      KC_ESC  , KC_NO   , KC_NO    , KC_NO            , LALT(KC_PSCR) ,
+    KC_KP_MINUS , KC_4    , KC_5       , KC_6       , KC_KP_PLUS     ,                      KC_LEFT , KC_DOWN , KC_UP    , LALT_T(KC_RIGHT) , _______       ,
+    KC_0        , KC_1    , KC_2       , KC_3       , KC_EQUAL       ,                      KC_HOME , KC_PGDN , KC_PGUP  , KC_END           , _______       ,
+    MO(4)       , _______ , S(KC_LGUI) , S(KC_LALT) , S(KC_LCTL)     , _______  , _______ , _______ , _______ , _______  , _______          , MO(4)
+  ),
+
+  [_RAISE_M] = LAYOUT_universal(
+    KC_QUOT , S(KC_QUOT) , S(KC_1)    , S(KC_SLSH) , S(KC_GRAVE) ,                     KC_BSLS , S(KC_LBRC) , S(KC_RBRC) , KC_NO      , S(KC_5)  ,
+    S(KC_2) , KC_SCLN    , S(KC_4)    , S(KC_COMM) , S(KC_DOT)   ,                     S(KC_3) , S(KC_9)    , S(KC_0)    , S(KC_BSLS) , KC_EQUAL ,
+    KC_NO   , S(KC_8)    , S(KC_SCLN) , S(KC_6)    , KC_GRAVE    ,                     S(KC_7) , KC_LBRC    , KC_RBRC    , KC_NO      , KC_SLSH  ,
+    _______ , _______    , _______    , _______    , _______     , _______ , _______ , _______ , _______    , _______    , _______    , _______
+  ),
+
+  [_ADJUST_M] = LAYOUT_universal(
+    KC_F10  , KC_F7       , KC_F8   , KC_F9   , KC_NO   ,                     LGUI(KC_TAB) , LCTL(KC_PGUP)   , LCTL(KC_PGDN)  , KC_NO      , LSG(KC_S) ,
+    KC_F11  , KC_F4       , KC_F5   , KC_F6   , KC_NO   ,                     LCTL(KC_W)   , LCTL(S(KC_TAB)) , LCTL(KC_TAB)   , LCTL(KC_T) , KC_NO     ,
+    KC_F12  , LCTL(KC_F1) , KC_F2   , KC_F3   , KC_NO   ,                     KC_NO        , LALT(KC_LEFT)   , LALT(KC_RIGHT) , KC_NO      , KC_NO     ,
+    _______ , _______     , _______ , _______ , _______ , _______ , _______ , _______      , _______         , _______        , _______    , _______
+  ),
+  // 追加レイヤーの定義
+  [_KEYBOARD_M] = LAYOUT_universal(
     KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
@@ -204,9 +250,22 @@ color.h
 */
 // clang-format on
 
+// デフォルトレイヤーの切り替え
+switch (detected_host_os) {
+  case OS_WINDOWS || OS_LINUX:
+    default_layer_set(1UL<<_WINDOWS);
+    break;
+  case OS_MACOS || OS_IOS:
+    default_layer_set(1UL<<_MAC);
+    break;
+  default:
+    default_layer_set(1UL<<_WINDOWS);
+    break;
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    keyball_set_scroll_mode(get_highest_layer(state) == _ADJUST_W || get_highest_layer(state) == _ADJUST_M);
 
     uint8_t layer = biton32(state);
     switch (layer) {
