@@ -251,7 +251,7 @@ color.h
 // clang-format on
 
 // デフォルトレイヤーの切り替え
-switch (detected_host_os) {
+switch (detected_host_os()) {
   case OS_WINDOWS || OS_LINUX:
     default_layer_set(1UL<<_WINDOWS);
     break;
