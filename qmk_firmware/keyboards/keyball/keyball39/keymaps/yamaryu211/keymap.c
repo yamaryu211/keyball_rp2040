@@ -213,21 +213,22 @@ color.h
 // clang-format on
 
 // デフォルトレイヤーの切り替え
-void keyboard_post_init_user(void) {
+void keyboard_post_init_user() {
   wait_ms(400);
-  switch (detected_host_os()) {
+  os_variant_t os = detected_host_os();
+  switch (os) {
     case OS_WINDOWS:
-      layer_move(_WIN);
+      default_layer_set(1UL << _WIN);
       break;
     case OS_MACOS:
     case OS_IOS:
-      layer_move(_MAC);
+      default_layer_set(1UL << _MAC);
       break;
     case OS_LINUX:
-      layer_move(_WIN);
+      default_layer_set(1UL << _WIN);
       break;
     default:
-      layer_move(_WIN);
+      default_layer_set(1UL << _WIN);
   }
 }
 
