@@ -357,3 +357,14 @@ tap_dance_action_t tap_dance_actions[] = {
       COMBO(combo_tab3_alt, KC_TAB),
   };
 #endif
+
+#ifdef OLED_ENABLE
+
+#    include "lib/oledkit/oledkit.h"
+
+void oledkit_render_info_user(void) {
+    keyball_oled_render_keyinfo();
+    keyball_oled_render_ballinfo();
+    keyball_oled_render_layerinfo();
+}
+#endif
