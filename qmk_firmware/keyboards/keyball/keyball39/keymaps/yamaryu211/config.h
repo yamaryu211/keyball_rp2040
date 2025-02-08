@@ -82,4 +82,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_DEFAULT_VAL 50         // 〃
 
 // USB接続時のタイムアウト時間を2.5秒に設定
-# define SPLIT_USB_TIMEOUT 2500 // ミリ秒
+//# define SPLIT_USB_TIMEOUT 2500 // ミリ秒
+// #define SPLIT_USB_TIMEOUT_POLL 25
+#define USB_VBUS_PIN GP24 // USB VBUSのピンを指定
