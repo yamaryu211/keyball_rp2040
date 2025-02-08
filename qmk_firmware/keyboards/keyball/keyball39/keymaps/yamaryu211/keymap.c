@@ -180,31 +180,31 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 // clang-format off
-
+/*
 
 color.h
-// V(明るさ)を255から128に変更
-#define HSV_AZURE       132, 102, 128
-#define HSV_BLACK         0,   0,   0
-#define HSV_BLUE        170, 255, 128
-#define HSV_CHARTREUSE   64, 255, 128
-#define HSV_CORAL        11, 176, 128
-#define HSV_CYAN        128, 255, 128
-#define HSV_GOLD         36, 255, 128
-#define HSV_GOLDENROD    30, 218, 218 // デフォルトのまま
-#define HSV_GREEN        85, 255, 128
-#define HSV_MAGENTA     213, 255, 128
-#define HSV_ORANGE       21, 255, 128
-#define HSV_PINK        234, 128, 128
-#define HSV_PURPLE      191, 255, 128
-#define HSV_RED           0, 255, 128
-#define HSV_SPRINGGREEN 106, 255, 128
-#define HSV_TEAL        128, 255, 128 // デフォルトのまま
-#define HSV_TURQUOISE   123,  90, 112 // デフォルトのまま
-#define HSV_WHITE         0,   0, 128
-#define HSV_YELLOW       43, 255, 128
-#define HSV_OFF         HSV_BLACK
 
+#define HSV_AZURE       132, 102, 255
+#define HSV_BLACK         0,   0,   0
+#define HSV_BLUE        170, 255, 255
+#define HSV_CHARTREUSE   64, 255, 255
+#define HSV_CORAL        11, 176, 255
+#define HSV_CYAN        128, 255, 255
+#define HSV_GOLD         36, 255, 255
+#define HSV_GOLDENROD    30, 218, 218
+#define HSV_GREEN        85, 255, 255
+#define HSV_MAGENTA     213, 255, 255
+#define HSV_ORANGE       21, 255, 255
+#define HSV_PINK        234, 128, 255
+#define HSV_PURPLE      191, 255, 255
+#define HSV_RED           0, 255, 255
+#define HSV_SPRINGGREEN 106, 255, 255
+#define HSV_TEAL        128, 255, 128
+#define HSV_TURQUOISE   123,  90, 112
+#define HSV_WHITE         0,   0, 255
+#define HSV_YELLOW       43, 255, 255
+#define HSV_OFF         HSV_BLACK
+*/
 // clang-format on
 
 // デフォルトレイヤーの切り替え
@@ -234,19 +234,19 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t layer = biton32(state);
     switch (layer) {
         case 0:
-            rgblight_sethsv_noeeprom(HSV_SPRINGGREEN);
+            rgblight_sethsv_noeeprom(106, 255, 128); // HSV_SPRINGGREEN
             break;
         case 1:
-            rgblight_sethsv_noeeprom(HSV_WHITE);
+            rgblight_sethsv_noeeprom(0, 0, 128); // HSV_WHITE
             break;
         case 2:
-            rgblight_sethsv_noeeprom(HSV_GOLD);
+            rgblight_sethsv_noeeprom(43, 255, 128); // HSV_YELLOW
             break;
         case 3:
-            rgblight_sethsv_noeeprom(HSV_BLUE);
+            rgblight_sethsv_noeeprom(170, 255, 128); // HSV_BLUE
             break;
         case 4:
-            rgblight_sethsv_noeeprom(HSV_MAGENTA);
+            rgblight_sethsv_noeeprom(213, 255, 128); // HSV_MAGENTA
             break;            
     }
 

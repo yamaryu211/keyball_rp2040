@@ -77,8 +77,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_EFFECT_BREATHE_MAX 128
 
 // バックライトの初期値
-#define RGBLIGHT_DEFAULT_HUE 150         // バックライトの初期値
-#define RGBLIGHT_DEFAULT_SAT 0          // 〃
+#define RGBLIGHT_DEFAULT_HUE 106         // バックライトの初期値
+#define RGBLIGHT_DEFAULT_SAT 255          // 〃
 #define RGBLIGHT_DEFAULT_VAL 128         // 〃
 
 // USB接続時のタイムアウト時間を2.5秒に設定
