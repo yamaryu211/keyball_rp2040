@@ -73,13 +73,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KEYBALL_SCROLL_DIV_DEFAULT 5 // スクロール速度 (default: 4)
 #define KEYBALL_CPI_DEFAULT 900 // マウス速度 (default: 500)
 
-// バックライトのBreathingエフェクトの最大輝度を30に設定
-#define RGBLIGHT_EFFECT_BREATHE_MAX 30
+// バックライトのBreathingエフェクトの最大輝度を50%(最大255)に設定
+#define RGBLIGHT_EFFECT_BREATHE_MAX 128
 
 // バックライトの初期値
 #define RGBLIGHT_DEFAULT_HUE 150         // バックライトの初期値
 #define RGBLIGHT_DEFAULT_SAT 0          // 〃
-#define RGBLIGHT_DEFAULT_VAL 30         // 〃
+#define RGBLIGHT_DEFAULT_VAL 128         // 〃
 
 // USB接続時のタイムアウト時間を2.5秒に設定
 # define SPLIT_USB_TIMEOUT 2500 // ミリ秒

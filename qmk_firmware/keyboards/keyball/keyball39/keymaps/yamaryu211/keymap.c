@@ -234,19 +234,19 @@ layer_state_t layer_state_set_user(layer_state_t state) {
     uint8_t layer = biton32(state);
     switch (layer) {
         case 0:
-            rgblight_sethsv_noeeprom(HSV_SPRINGGREEN);
+            rgblight_sethsv_noeeprom(HSV_SPRINGGREEN, 255, 128);
             break;
         case 1:
-            rgblight_sethsv_noeeprom(HSV_WHITE);
+            rgblight_sethsv_noeeprom(HSV_WHITE, 255, 128);
             break;
         case 2:
-            rgblight_sethsv_noeeprom(HSV_GOLD);
+            rgblight_sethsv_noeeprom(HSV_GOLD, 255, 128);
             break;
         case 3:
-            rgblight_sethsv_noeeprom(HSV_BLUE);
+            rgblight_sethsv_noeeprom(HSV_BLUE, 255, 128);
             break;
         case 4:
-            rgblight_sethsv_noeeprom(HSV_MAGENTA);
+            rgblight_sethsv_noeeprom(HSV_MAGENTA, 255, 128);
             break;            
     }
 
