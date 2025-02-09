@@ -26,6 +26,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // OS判別用に追加
 #include "os_detection.h"
 
+// レイヤー定義
+#define _WINDOWS 0
+#define _LOWER_W 1
+#define _RAISE_W 2
+#define _ADJUST_W 3
+#define _KEYBOARD_W 4
+#define _MAC 5
+#define _LOWER_M 6
+#define _RAISE_M 7
+#define _ADJUST_M 8
+#define _KEYBOARD_M 9
+
 enum custom_keycodes {
   MY_MACRO_0 = SAFE_RANGE,  // 0x7E40  User0
   MY_MACRO_1,  // 0x7E41  User1
@@ -97,87 +109,78 @@ void dance_fn_reset(tap_dance_state_t *state, void *user_data);
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (yamaryu211)
-  [0] = LAYOUT_universal(
-    KC_Q           , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
+  [_WINDOWS] = LAYOUT_universal(
+    TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
     LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
   ),
 
-  [1] = LAYOUT_universal(
+  [_LOWER_W] = LAYOUT_universal(
     KC_KP_SLASH , KC_7    , KC_8       , KC_9       , KC_KP_ASTERISK ,                      KC_ESC  , KC_NO   , KC_NO    , KC_NO            , LALT(KC_PSCR) ,
     KC_KP_MINUS , KC_4    , KC_5       , KC_6       , KC_KP_PLUS     ,                      KC_LEFT , KC_DOWN , KC_UP    , LALT_T(KC_RIGHT) , _______       ,
     KC_0        , KC_1    , KC_2       , KC_3       , KC_EQUAL       ,                      KC_HOME , KC_PGDN , KC_PGUP  , KC_END           , _______       ,
     MO(4)       , _______ , S(KC_LGUI) , S(KC_LALT) , S(KC_LCTL)     , _______  , _______ , _______ , _______ , _______  , _______          , MO(4)
   ),
 
-  [2] = LAYOUT_universal(
+  [_RAISE_W] = LAYOUT_universal(
     KC_QUOT , S(KC_QUOT) , S(KC_1)    , S(KC_SLSH) , S(KC_GRAVE) ,                     KC_BSLS , S(KC_LBRC) , S(KC_RBRC) , KC_NO      , S(KC_5)  ,
     S(KC_2) , KC_SCLN    , S(KC_4)    , S(KC_COMM) , S(KC_DOT)   ,                     S(KC_3) , S(KC_9)    , S(KC_0)    , S(KC_BSLS) , KC_EQUAL ,
     KC_NO   , S(KC_8)    , S(KC_SCLN) , S(KC_6)    , KC_GRAVE    ,                     S(KC_7) , KC_LBRC    , KC_RBRC    , KC_NO      , KC_SLSH  ,
     _______ , _______    , _______    , _______    , _______     , _______ , _______ , _______ , _______    , _______    , _______    , _______
   ),
 
-  [3] = LAYOUT_universal(
+  [_ADJUST_W] = LAYOUT_universal(
     KC_F10  , KC_F7       , KC_F8   , KC_F9   , KC_NO   ,                     LGUI(KC_TAB) , LCTL(KC_PGUP)   , LCTL(KC_PGDN)  , KC_NO      , LSG(KC_S) ,
     KC_F11  , KC_F4       , KC_F5   , KC_F6   , KC_NO   ,                     LCTL(KC_W)   , LCTL(S(KC_TAB)) , LCTL(KC_TAB)   , LCTL(KC_T) , KC_NO     ,
     KC_F12  , LCTL(KC_F1) , KC_F2   , KC_F3   , KC_NO   ,                     KC_NO        , LALT(KC_LEFT)   , LALT(KC_RIGHT) , KC_NO      , KC_NO     ,
     _______ , _______     , _______ , _______ , _______ , _______ , _______ , _______      , _______         , _______        , _______    , _______
   ),
   // 追加レイヤーの定義
-  [4] = LAYOUT_universal(
+  [_KEYBOARD_W] = LAYOUT_universal(
     KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
   ),
+  [_MAC] = LAYOUT_universal(
+    TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
+    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
+    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
+  ),
 
-  // 以下は変更前のキーマップ
-  // [0] = LAYOUT_universal(
-  //   TD(TD_Q) , KC_W     , KC_E     , KC_R     , KC_T     ,                                        KC_Y     , KC_U     , KC_I     , KC_O     , LT(3,KC_P) ,
-  //   LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D) , LCTL_T(KC_F) , KC_G ,                              KC_H     , LCTL_T(KC_J)  , RSFT_T(KC_K) , LALT_T(KC_L) , LT(1,KC_MINUS) ,
-  //   KC_Z     , KC_X     , KC_C     , KC_V     , KC_B     ,                                        KC_N     , KC_M     , KC_COMM  , KC_DOT   , KC_SLSH  ,
-  //   LT(4,KC_ESC), LSFT_T(KC_LSFT), KC_TAB, LT(2,KC_LNG2), LT(3,KC_SPC), LT(1,KC_LNG1) ,           KC_BSPC  , LT(2,KC_ENT) , XXXXXXX   , XXXXXXX  , XXXXXXX , TD(TD_FN)
-  // ),
+  [_LOWER_M] = LAYOUT_universal(
+    KC_KP_SLASH , KC_7    , KC_8       , KC_9       , KC_KP_ASTERISK ,                      KC_ESC  , KC_NO   , KC_NO    , KC_NO            , LALT(KC_PSCR) ,
+    KC_KP_MINUS , KC_4    , KC_5       , KC_6       , KC_KP_PLUS     ,                      KC_LEFT , KC_DOWN , KC_UP    , LALT_T(KC_RIGHT) , _______       ,
+    KC_0        , KC_1    , KC_2       , KC_3       , KC_EQUAL       ,                      KC_HOME , KC_PGDN , KC_PGUP  , KC_END           , _______       ,
+    MO(4)       , _______ , S(KC_LGUI) , S(KC_LALT) , S(KC_LCTL)     , _______  , _______ , _______ , _______ , _______  , _______          , MO(4)
+  ),
 
-  // [1] = LAYOUT_universal(
-  //   KC_ESC  , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                      SELWORD  , KC_HOME  , KC_UP    , KC_END   , XXXXXXX  ,
-  //   KC_HOME , MY_MACRO_1, KC_PGUP , MY_MACRO_3, MY_MACRO_4 ,                                      KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , XXXXXXX  ,
-  //   XXXXXXX , XXXXXXX   , KC_PGDN , XXXXXXX   , ARROW ,                                           KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_BTN4  ,
-  //   KC_LCTL , _______   , _______ , _______   , _______  , _______  ,                             QK_REP   , _______  , _______  , _______  , _______  , KC_MUTE
-  // ),
+  [_RAISE_M] = LAYOUT_universal(
+    KC_QUOT , S(KC_QUOT) , S(KC_1)    , S(KC_SLSH) , S(KC_GRAVE) ,                     KC_BSLS , S(KC_LBRC) , S(KC_RBRC) , KC_NO      , S(KC_5)  ,
+    S(KC_2) , KC_SCLN    , S(KC_4)    , S(KC_COMM) , S(KC_DOT)   ,                     S(KC_3) , S(KC_9)    , S(KC_0)    , S(KC_BSLS) , KC_EQUAL ,
+    KC_NO   , S(KC_8)    , S(KC_SCLN) , S(KC_6)    , KC_GRAVE    ,                     S(KC_7) , KC_LBRC    , KC_RBRC    , KC_NO      , KC_SLSH  ,
+    _______ , _______    , _______    , _______    , _______     , _______ , _______ , _______ , _______    , _______    , _______    , _______
+  ),
 
-  // [2] = LAYOUT_universal(
-  //   KC_F6   , KC_F7     , KC_F8   , KC_F9     , KC_F10   ,                                        KC_COMM    , KC_7       , KC_8     , KC_9     , KC_0    ,
-  //   KC_PSCR , KC_F2     , KC_F3   , KC_F4     , KC_F5    ,                                        KC_DOT     , KC_4       , KC_5     , KC_6     , KC_MINS ,
-  //   DM_REC1 , DM_RSTP   , DM_PLY1 , KC_F11    , KC_F12   ,                                        S(KC_SCLN) , KC_1       , KC_2     , KC_3     , KC_SLSH ,
-  //   _______ , _______   , _______ , _______   , _______  , _______  ,                             QK_AREP    , _______    , _______  , _______  , _______ , KC_F1
-  // ),
-
-  // [3] = LAYOUT_universal(
-  //   S(KC_3)  , S(KC_COMM) , S(KC_DOT) , KC_SCLN , KC_GRV  ,                                      S(KC_7)    , KC_LBRC    , KC_RBRC    , S(KC_MINS) , S(KC_5)    ,
-  //   S(KC_1)  , KC_MINS    , S(KC_EQL) , KC_EQL  , S(KC_QUOT) ,                                   S(KC_BSLS) , S(KC_9)    , S(KC_0)    , S(KC_SCLN) , S(KC_SLSH) ,
-  //   S(KC_6)  , KC_SLSH    , S(KC_8)   , KC_BSLS , KC_QUOT ,                                      S(KC_GRV)  , S(KC_LBRC) , S(KC_RBRC) , S(KC_4)    , S(KC_2)    ,
-  //   _______  , _______    , _______   , QK_BOOT , _______ , KBC_SAVE ,                           QK_BOOT    , _______    , _______    , _______    , _______ , A2J_TOGG
-  // ),
-
-  // [4] = LAYOUT_universal(
-  //   RGB_TOG  , AML_TO   , XXXXXXX  , XXXXXXX  , XXXXXXX  ,                                       XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,
-  //   RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , SCRL_DVI ,                                       XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,
-  //   RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , SCRL_DVD ,                                       XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , KBC_SAVE ,
-  //   QK_BOOT  , KBC_RST  , XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  ,                            XXXXXXX  , XXXXXXX  , XXXXXXX  , XXXXXXX  , KBC_RST  , QK_BOOT
-  // ),
+  [_ADJUST_M] = LAYOUT_universal(
+    KC_F10  , KC_F7       , KC_F8   , KC_F9   , KC_NO   ,                     LGUI(KC_TAB) , LCTL(KC_PGUP)   , LCTL(KC_PGDN)  , KC_NO      , LSG(KC_S) ,
+    KC_F11  , KC_F4       , KC_F5   , KC_F6   , KC_NO   ,                     LCTL(KC_W)   , LCTL(S(KC_TAB)) , LCTL(KC_TAB)   , LCTL(KC_T) , KC_NO     ,
+    KC_F12  , LCTL(KC_F1) , KC_F2   , KC_F3   , KC_NO   ,                     KC_NO        , LALT(KC_LEFT)   , LALT(KC_RIGHT) , KC_NO      , KC_NO     ,
+    _______ , _______     , _______ , _______ , _______ , _______ , _______ , _______      , _______         , _______        , _______    , _______
+  ),
+  // 追加レイヤーの定義
+  [_KEYBOARD_M] = LAYOUT_universal(
+    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
+    CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
+  ),
 };
-// clang-format on
 
 // clang-format off
 /*
-  [4] = LAYOUT_universal(
-    RGB_TOG  , AML_TO   , AML_I50  , AML_D50  , _______  ,                                       _______  , _______  , SSNP_HOR , SSNP_VRT , SSNP_FRE ,
-    RGB_MOD  , RGB_HUI  , RGB_SAI  , RGB_VAI  , SCRL_DVI ,                                       _______  , _______  , _______  , _______  , _______  ,
-    RGB_RMOD , RGB_HUD  , RGB_SAD  , RGB_VAD  , SCRL_DVD ,                                       CPI_D1K  , CPI_D100 , CPI_I100 , CPI_I1K  , KBC_SAVE ,
-    QK_BOOT  , KBC_RST  , _______  , _______  , _______  , _______  ,                            _______  , _______  , _______  , _______  , KBC_RST  , QK_BOOT
-  ),
 
 color.h
 
@@ -204,26 +207,46 @@ color.h
 */
 // clang-format on
 
+// デフォルトレイヤーの切り替え
+void keyboard_post_init_user() {
+  wait_ms(400);
+  os_variant_t os = detected_host_os();
+  switch (os) {
+    case OS_WINDOWS:
+      default_layer_set(1UL << _WINDOWS);
+      break;
+    case OS_MACOS:
+    case OS_IOS:
+      default_layer_set(1UL << _MAC);
+      break;
+    case OS_LINUX:
+      default_layer_set(1UL << _WINDOWS);
+      break;
+    default:
+      default_layer_set(1UL << _WINDOWS);
+  }
+}
+
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
-    keyball_set_scroll_mode(get_highest_layer(state) == 3);
+    keyball_set_scroll_mode(get_highest_layer(state) == _ADJUST_W || get_highest_layer(state) == _ADJUST_M);
 
     uint8_t layer = biton32(state);
     switch (layer) {
         case 0:
-            rgblight_sethsv_noeeprom(HSV_SPRINGGREEN);
+            rgblight_sethsv_noeeprom(106, 255, 50); // HSV_SPRINGGREEN
             break;
         case 1:
-            rgblight_sethsv_noeeprom(HSV_WHITE);
+            rgblight_sethsv_noeeprom(0, 0, 50); // HSV_WHITE
             break;
         case 2:
-            rgblight_sethsv_noeeprom(HSV_GOLD);
+            rgblight_sethsv_noeeprom(43, 255, 50); // HSV_YELLOW
             break;
         case 3:
-            rgblight_sethsv_noeeprom(HSV_BLUE);
+            rgblight_sethsv_noeeprom(170, 255, 50); // HSV_BLUE
             break;
         case 4:
-            rgblight_sethsv_noeeprom(HSV_MAGENTA);
+            rgblight_sethsv_noeeprom(213, 255, 50); // HSV_MAGENTA
             break;            
     }
 
@@ -310,8 +333,39 @@ void keyball_oled_render_keyinfo_custom(void) {
     oled_write_char(to_1x(keyball.last_kc >> 4), false);
     oled_write_char(to_1x(keyball.last_kc), false);
 
+    // indicate jis mode: on/off
+    oled_write_P(PSTR(" JP"), false);
+    if (is_jis_mode()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+}
+
+void keyball_oled_render_ballinfo_custom(void) {
+    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
+    //
+    // Output example:
+    //
+    //     Ball: -12  34   0   0
+
+    // 1st line, "Ball" label, mouse x, y, h, and v.
+    oled_write_P(PSTR("Ball\xB1"), false);
+    oled_write(format_4d(keyball.last_mouse.x), false);
+    oled_write(format_4d(keyball.last_mouse.y), false);
+    // oled_write(format_4d(keyball.last_mouse.h), false);
+    // oled_write(format_4d(keyball.last_mouse.v), false);
+
+    // indicate Caps Word mode: on/off
+    oled_write_P(PSTR("    CW"), false);
+    if (is_caps_word_on()) {
+        oled_write_P(LFSTR_ON, false);
+    } else {
+        oled_write_P(LFSTR_OFF, false);
+    }
+
+    // 2nd line, empty label and CPI
     // 接続先OS情報の表示
-    oled_write_P(PSTR("  "), false);
     switch (detected_host_os()) {
         case OS_MACOS:
             oled_write_P(PSTR("Mac"), false);
@@ -329,40 +383,7 @@ void keyball_oled_render_keyinfo_custom(void) {
             oled_write_P(PSTR("---"), false);
             break;
     }
-
-    // // indicate jis mode: on/off
-    // oled_write_P(PSTR(" JP"), false);
-    // if (is_jis_mode()) {
-    //     oled_write_P(LFSTR_ON, false);
-    // } else {
-    //     oled_write_P(LFSTR_OFF, false);
-    // }
-}
-
-void keyball_oled_render_ballinfo_custom(void) {
-    // Format: `Ball:{mouse x}{mouse y}{mouse h}{mouse v}`
-    //
-    // Output example:
-    //
-    //     Ball: -12  34   0   0
-
-    // 1st line, "Ball" label, mouse x, y, h, and v.
-    oled_write_P(PSTR("Ball\xB1"), false);
-    oled_write(format_4d(keyball.last_mouse.x), false);
-    oled_write(format_4d(keyball.last_mouse.y), false);
-    oled_write(format_4d(keyball.last_mouse.h), false);
-    oled_write(format_4d(keyball.last_mouse.v), false);
-
-    // // indicate Caps Word mode: on/off
-    // oled_write_P(PSTR("    CW"), false);
-    // if (is_caps_word_on()) {
-    //     oled_write_P(LFSTR_ON, false);
-    // } else {
-    //     oled_write_P(LFSTR_OFF, false);
-    // }
-
-    // 2nd line, empty label and CPI
-    oled_write_P(PSTR("    \xB1\xBC\xBD"), false);
+    oled_write_P(PSTR(" \xB1\xBC\xBD"), false);
     oled_write(format_4d(keyball_get_cpi()) + 1, false);
     oled_write_P(PSTR("00 "), false);
 
@@ -601,6 +622,8 @@ tap_dance_action_t tap_dance_actions[] = {
   const uint16_t PROGMEM combo_left_click3[] = {LT(1, KC_T), LT(2, KC_N), COMBO_END};
   const uint16_t PROGMEM combo_right_click3[] = {LT(2, KC_N), MT(MOD_LALT, KC_S), COMBO_END};
   const uint16_t PROGMEM combo_middle_click3[] = {LT(1, KC_T), MT(MOD_LALT, KC_S), COMBO_END};
+  // タップダンスとの組み合わせ
+  const uint16_t PROGMEM combo_td_esc[] = {TD(TD_Q), KC_W, COMBO_END};
 
   combo_t key_combos[] = {
       COMBO(combo_esc, KC_ESC),
@@ -621,6 +644,7 @@ tap_dance_action_t tap_dance_actions[] = {
       COMBO(combo_tab_alt, KC_TAB),
       COMBO(combo_tab2_alt, KC_TAB),
       COMBO(combo_tab3_alt, KC_TAB),
+      COMBO(combo_td_esc, KC_ESC)
   };
 #endif
 
