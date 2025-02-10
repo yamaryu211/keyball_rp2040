@@ -100,6 +100,9 @@ enum {
 
 td_state_t cur_dance(tap_dance_state_t *state);
 
+// 接続先のOS判別用
+os_variant_t host_os;
+
 // For the x tap dance. Put it here so it can be used in any keymap
 void dance_q_finished(tap_dance_state_t *state, void *user_data);
 void dance_q_reset(tap_dance_state_t *state, void *user_data);
@@ -210,8 +213,8 @@ color.h
 // デフォルトレイヤーの切り替え
 void keyboard_post_init_user() {
   wait_ms(400);
-  os_variant_t os = detected_host_os();
-  switch (os) {
+  host_os = detected_host_os();
+  switch (host_os) {
     case OS_WINDOWS:
       default_layer_set(1UL << _WINDOWS);
       break;
@@ -233,20 +236,33 @@ layer_state_t layer_state_set_user(layer_state_t state) {
 
     uint8_t layer = biton32(state);
     switch (layer) {
-        case 0:
+        case _WINDOWS:
             rgblight_sethsv_noeeprom(106, 255, 50); // HSV_SPRINGGREEN
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
             break;
-        case 1:
+        case _MAC:
+            rgblight_sethsv_noeeprom(132, 102, 50); // HSV_AZURE
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
+            break;
+        case _LOWER_W:
+        case _LOWER_M:
             rgblight_sethsv_noeeprom(0, 0, 50); // HSV_WHITE
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
             break;
-        case 2:
+        case _RAISE_W:
+        case _RAISE_M:
             rgblight_sethsv_noeeprom(43, 255, 50); // HSV_YELLOW
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
             break;
-        case 3:
+        case _ADJUST_W:
+        case _ADJUST_M:
             rgblight_sethsv_noeeprom(170, 255, 50); // HSV_BLUE
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
             break;
-        case 4:
+        case _KEYBOARD_W:
+        case _KEYBOARD_M:
             rgblight_sethsv_noeeprom(213, 255, 50); // HSV_MAGENTA
+            rgblight_mode(RGBLIGHT_MODE_BREATHING + 0);
             break;            
     }
 
@@ -366,7 +382,7 @@ void keyball_oled_render_ballinfo_custom(void) {
 
     // 2nd line, empty label and CPI
     // 接続先OS情報の表示
-    switch (detected_host_os()) {
+    switch (host_os) {
         case OS_MACOS:
             oled_write_P(PSTR("Mac"), false);
             break;
