@@ -557,7 +557,7 @@ void dance_q_finished(tap_dance_state_t *state, void *user_data) {
     TD_Q_tap_state.state = cur_dance(state);
     switch (TD_Q_tap_state.state) {
         case TD_SINGLE_TAP: register_code(KC_Q); break;
-        case TD_SINGLE_HOLD: register_code(KC_LCTL); break;
+        case TD_SINGLE_HOLD: register_code(KC_LGUI); break;
         case TD_DOUBLE_TAP: register_code(KC_ESC); break;
         case TD_DOUBLE_HOLD: caps_word_on(); break;
         case TD_DOUBLE_SINGLE_TAP: tap_code(KC_Q); register_code(KC_Q); break;
@@ -568,7 +568,7 @@ void dance_q_finished(tap_dance_state_t *state, void *user_data) {
 void dance_q_reset(tap_dance_state_t *state, void *user_data) {
     switch (TD_Q_tap_state.state) {
         case TD_SINGLE_TAP: unregister_code(KC_Q); break;
-        case TD_SINGLE_HOLD: unregister_code(KC_LCTL); break;
+        case TD_SINGLE_HOLD: unregister_code(KC_LGUI); break;
         case TD_DOUBLE_TAP: unregister_code(KC_ESC); break;
         case TD_DOUBLE_HOLD: break;
         case TD_DOUBLE_SINGLE_TAP: unregister_code(KC_Q); break;
