@@ -628,6 +628,7 @@ tap_dance_action_t tap_dance_actions[] = {
   const uint16_t PROGMEM combo_esc2[] = {MT(MOD_LGUI, KC_Q), KC_W, COMBO_END};
   const uint16_t PROGMEM combo_tab2[] = {MT(MOD_LCTL, KC_A), MT(MOD_LALT, KC_S), COMBO_END};
   const uint16_t PROGMEM combo_tab2_alt[] = {MT(MOD_LALT, KC_S), LT(2, KC_D), COMBO_END};
+  const uint16_t PROGMEM combo_shift_tab[] = {LT(2, KC_D), LT(1, KC_F), COMBO_END};
   const uint16_t PROGMEM combo_left_click2[] = {LT(1, KC_J), LT(2, KC_K), COMBO_END};
   const uint16_t PROGMEM combo_right_click2[] = {LT(2, KC_K), MT(MOD_LALT, KC_L), COMBO_END};
   const uint16_t PROGMEM combo_middle_click2[] = {LT(1, KC_J), MT(MOD_LALT, KC_L), COMBO_END};
@@ -644,6 +645,7 @@ tap_dance_action_t tap_dance_actions[] = {
   combo_t key_combos[] = {
       COMBO(combo_esc, KC_ESC),
       COMBO(combo_tab, KC_TAB),
+      COMBO(combo_shift_tab, S(KC_TAB)),
       COMBO(combo_left_click, KC_BTN1),
       COMBO(combo_right_click, KC_BTN2),
       COMBO(combo_middle_click, KC_BTN3),
