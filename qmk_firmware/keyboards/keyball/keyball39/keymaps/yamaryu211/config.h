@@ -74,7 +74,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KEYBALL_CPI_DEFAULT 900 // マウス速度 (default: 500)
 
 // バックライトのBreathingエフェクトの最大輝度を50%(最大255)に設定
-#define RGBLIGHT_EFFECT_BREATHE_MAX 50
+// #define RGBLIGHT_EFFECT_BREATHE_MAX 50
+
+// LEDの最大輝度を制限
+#define RGBLIGHT_LIMIT_VAL 128  // 0～255 の範囲で設定（例: 100 に制限）
+
 
 // バックライトの初期値
 #define RGBLIGHT_DEFAULT_HUE 106         // バックライトの初期値
