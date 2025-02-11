@@ -77,7 +77,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define RGBLIGHT_EFFECT_BREATHE_MAX 50
 
 // LEDの最大輝度を制限
-#define RGBLIGHT_LIMIT_VAL 128  // 0～255 の範囲で設定（例: 100 に制限）
+#undef RGBLIGHT_LIMIT_VAL  // すでに定義されている値を解除
+#define RGBLIGHT_LIMIT_VAL 64  // 0～255 の範囲で設定（例: 100 に制限）
 
 
 // バックライトの初期値
