@@ -141,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   // 追加レイヤーの定義
   [_KEYBOARD_W] = LAYOUT_universal(
-    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
+    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRID , KC_BRIU , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
@@ -175,7 +175,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   ),
   // 追加レイヤーの定義
   [_KEYBOARD_M] = LAYOUT_universal(
-    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRIU , KC_BRID , KC_MUTE , KC_VOLD , KC_VOLU ,
+    KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRID , KC_BRIU , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
