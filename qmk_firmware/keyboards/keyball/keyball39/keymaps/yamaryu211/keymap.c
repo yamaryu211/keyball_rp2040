@@ -105,12 +105,28 @@ td_state_t cur_dance(tap_dance_state_t *state);
 os_variant_t host_os;
 
 // For the x tap dance. Put it here so it can be used in any keymap
+// Q・Win・Esc・Caps word
 void dance_q_finished(tap_dance_state_t *state, void *user_data);
 void dance_q_reset(tap_dance_state_t *state, void *user_data);
+// FN
 void dance_fn_finished(tap_dance_state_t *state, void *user_data);
 void dance_fn_reset(tap_dance_state_t *state, void *user_data);
+// -・=
 void dance_minus_finished(tap_dance_state_t *state, void *user_data);
 void dance_minus_reset(tap_dance_state_t *state, void *user_data);
+// Space・Shift・Enter
+void dance_space_finished(tap_dance_state_t *state, void *user_data);
+void dance_space_reset(tap_dance_state_t *state, void *user_data);
+// Space・Layer 1・Enter
+void dance_enter_finished(tap_dance_state_t *state, void *user_data);
+void dance_enter_reset(tap_dance_state_t *state, void *user_data);
+// BS・Layer 2・Ctrl+BS
+void dance_bs_finished(tap_dance_state_t *state, void *user_data);
+void dance_bs_reset(tap_dance_state_t *state, void *user_data);
+// Del・Ctrl・Ctrl+Del
+void dance_ctrl_finished(tap_dance_state_t *state, void *user_data);
+void dance_ctrl_reset(tap_dance_state_t *state, void *user_data);
+
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -119,7 +135,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , TD(TD_MINUS)    ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
-    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , TD(TD_CTRL)    , TD(TD_SPACE)   , TD(TD_ENTER)  , TD(TD_BS)     , _______         , _______     , _______        , LT(3, KC_LNG1)
   ),
 
   [_LOWER_W] = LAYOUT_universal(
@@ -153,7 +169,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
     LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , TD(TD_MINUS)    ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
-    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , TD(TD_CTRL)    , TD(TD_SPACE)   , TD(TD_ENTER)  , TD(TD_BS)     , _______         , _______     , _______        , LT(3, KC_LNG1)
   ),
 
   [_LOWER_M] = LAYOUT_universal(
@@ -658,10 +674,183 @@ void dance_minus_reset(tap_dance_state_t *state, void *user_data) {
   TD_MINUS_tap_state.state = TD_NONE;
 }
 
+// TD_SPACE
+static td_tap_t TD_SPACE_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void dance_space_finished(tap_dance_state_t *state, void *user_data) {
+  TD_SPACE_tap_state.state = cur_dance2(state);
+  switch (TD_SPACE_tap_state.state) {
+    case TD_SINGLE_TAP:
+      register_code(KC_SPACE);
+      break;
+    case TD_SINGLE_HOLD:
+      register_code(KC_LSFT);
+      break;
+    case TD_DOUBLE_TAP:
+      register_code(KC_ENT);
+      break;
+    case TD_DOUBLE_HOLD:
+      register_code(KC_LGUI);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
+      register_code(KC_SPACE);
+      break;
+    default:
+      break;
+  }
+
+void dance_space_reset(tap_dance_state_t *state, void *user_data) {
+  switch (TD_SPACE_tap_state.state) {
+    case TD_SINGLE_TAP:
+      unregister_code(KC_SPACE);
+      break;
+    case TD_SINGLE_HOLD:
+      unregister_code(KC_LSFT);
+      break;
+    case TD_DOUBLE_TAP:
+      unregister_code(KC_ENT);
+      break;
+    case TD_DOUBLE_HOLD:
+      unregister_code(KC_LGUI);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
+      unregister_code(KC_SPACE);
+      break;
+    default:
+      break;
+  }
+  TD_SPACE_tap_state.state = TD_NONE;
+}
+
+// TD_ENTER
+static td_tap_t TD_ENTER_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void dance_enter_finished(tap_dance_state_t *state, void *user_data) {
+  TD_ENTER_tap_state.state = cur_dance2(state);
+  switch (TD_ENTER_tap_state.state) {
+    case TD_SINGLE_TAP:
+      register_code(KC_SPACE);
+      break;
+    case TD_SINGLE_HOLD:
+      layer_on(1);
+      break;
+    case TD_DOUBLE_TAP:
+      register_code(KC_ENT);
+      break;
+    default:
+      break;
+  }
+
+void dance_enter_reset(tap_dance_state_t *state, void *user_data) {
+  switch (TD_ENTER_tap_state.state) {
+    case TD_SINGLE_TAP:
+      unregister_code(KC_SPACE);
+      break;
+    case TD_SINGLE_HOLD:
+      layer_off(1);
+      break;
+    case TD_DOUBLE_TAP:
+      unregister_code(KC_ENT);
+      break;
+    default:
+      break;
+  }
+  TD_ENTER_tap_state.state = TD_NONE;
+}
+// TD_BS
+static td_tap_t TD_BS_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void dance_bs_finished(tap_dance_state_t *state, void *user_data) {
+  TD_BS_tap_state.state = cur_dance2(state);
+  switch (TD_BS_tap_state.state) {
+    case TD_SINGLE_TAP:
+      register_code(KC_BSPC);
+      break;
+    case TD_SINGLE_HOLD:
+      layer_on(2);
+      break;
+    case TD_DOUBLE_TAP:
+      register_code(LCTL(KC_BSPC));
+      break;
+    default:
+      break;
+  }
+}
+
+void dance_bs_reset(tap_dance_state_t *state, void *user_data) {
+  switch (TD_BS_tap_state.state) {
+    case TD_SINGLE_TAP:
+      unregister_code(KC_BSPC);
+      break;
+    case TD_SINGLE_HOLD:
+      layer_off(2);
+      break;
+    case TD_DOUBLE_TAP:
+      unregister_code(LCTL(KC_BSPC));
+      break;
+    default:
+      break;
+  }
+  TD_BS_tap_state.state = TD_NONE;
+}
+
+// TD_CTRL
+static td_tap_t TD_CTRL_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void dance_ctrl_finished(tap_dance_state_t *state, void *user_data) {
+  TD_CTRL_tap_state.state = cur_dance2(state);
+  switch (TD_CTRL_tap_state.state) {
+    case TD_SINGLE_TAP:
+      register_code(KC_DEL);
+      break;
+    case TD_SINGLE_HOLD:
+      register_code(KC_LCTL);
+      break;
+    case TD_DOUBLE_TAP:
+      register_code(LCTL(KC_DEL));
+      break;
+    default:
+      break;
+  }
+}
+
+void dance_ctrl_reset(tap_dance_state_t *state, void *user_data) {
+  switch (TD_CTRL_tap_state.state) {
+    case TD_SINGLE_TAP:
+      unregister_code(KC_DEL);
+      break;
+    case TD_SINGLE_HOLD:
+      unregister_code(KC_LCTL);
+      break;
+    case TD_DOUBLE_TAP:
+      unregister_code(LCTL(KC_DEL));
+      break;
+    default:
+      break;
+  }
+  TD_CTRL_tap_state.state = TD_NONE;
+}
+
 tap_dance_action_t tap_dance_actions[] = {
   [TD_Q] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_q_finished, dance_q_reset),
   [TD_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_fn_finished, dance_fn_reset),
   [TD_MINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_minus_finished, dance_minus_reset),
+  [TD_SPACE] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_space_finished, dance_space_reset),
+  [TD_ENTER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_enter_finished, dance_enter_reset),
+  [TD_BS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_bs_finished, dance_bs_reset),
+  [TD_CTRL] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_ctrl_finished, dance_ctrl_reset),
 };
 
 // COMBO
