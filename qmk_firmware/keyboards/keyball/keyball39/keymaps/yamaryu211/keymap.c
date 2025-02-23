@@ -97,6 +97,10 @@ enum {
   TD_Q,
   TD_FN,
   TD_MINUS,
+  TD_CTRL,
+  TD_SPACE,
+  TD_ENTER,
+  TD_BS,
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
