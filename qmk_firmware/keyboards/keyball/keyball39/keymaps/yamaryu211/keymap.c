@@ -96,6 +96,7 @@ typedef struct {
 enum {
   TD_Q,
   TD_FN,
+  TD_MINUS,
 };
 
 td_state_t cur_dance(tap_dance_state_t *state);
@@ -108,13 +109,15 @@ void dance_q_finished(tap_dance_state_t *state, void *user_data);
 void dance_q_reset(tap_dance_state_t *state, void *user_data);
 void dance_fn_finished(tap_dance_state_t *state, void *user_data);
 void dance_fn_reset(tap_dance_state_t *state, void *user_data);
+void dance_minus_finished(tap_dance_state_t *state, void *user_data);
+void dance_minus_reset(tap_dance_state_t *state, void *user_data);
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (yamaryu211)
   [_WINDOWS] = LAYOUT_universal(
     TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
-    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINS) ,
+    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , TD(TD_MINUS)    ,
     LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
     LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPC) , LT(1, KC_ENT) , LT(2,KC_BSPC) , _______         , _______     , _______        , LT(3, KC_LNG1)
   ),
@@ -605,9 +608,54 @@ void dance_fn_reset(tap_dance_state_t *state, void *user_data) {
   TD_FN_tap_state.state = TD_NONE;
 }
 
+// TD_MINUS
+static td_tap_t TD_MINUS_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+void dance_minus_finished(tap_dance_state_t *state, void *user_data) {
+  TD_MINUS_tap_state.state = cur_dance2(state);
+  switch (TD_MINUS_tap_state.state) {
+    case TD_SINGLE_TAP:
+      register_code(KC_MINUS);
+      break;
+    case TD_SINGLE_HOLD:
+      register_code(KC_LCTL);
+      break;
+    case TD_DOUBLE_TAP:
+      register_code(KC_EQUAL);
+      break;
+    case TD_DOUBLE_HOLD:
+      register_code(S(KC_EQUAL));
+      break;
+    default:
+      break;
+  }
+}
+
+void dance_minus_reset(tap_dance_state_t *state, void *user_data) {
+  switch (TD_MINUS_tap_state.state) {
+    case TD_SINGLE_TAP:
+      unregister_code(KC_MINUS);
+      break;
+    case TD_SINGLE_HOLD:
+      unregister_code(KC_LCTL);
+      break;
+    case TD_DOUBLE_TAP:
+      unregister_code(KC_EQUAL);
+      break;
+    case TD_DOUBLE_HOLD:
+      unregister_code(S(KC_EQUAL));
+      break;
+  }
+  TD_MINUS_tap_state.state = TD_NONE;
+}
+
 tap_dance_action_t tap_dance_actions[] = {
   [TD_Q] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_q_finished, dance_q_reset),
   [TD_FN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_fn_finished, dance_fn_reset),
+  [TD_MINUS] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, dance_minus_finished, dance_minus_reset),
 };
 
 // COMBO
