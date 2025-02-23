@@ -654,6 +654,8 @@ void dance_minus_reset(tap_dance_state_t *state, void *user_data) {
     case TD_DOUBLE_SINGLE_TAP:
       unregister_code(KC_MINUS);
       break;
+    default:
+      break;
   }
   TD_MINUS_tap_state.state = TD_NONE;
 }
