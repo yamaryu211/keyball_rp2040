@@ -705,6 +705,7 @@ void dance_space_finished(tap_dance_state_t *state, void *user_data) {
     default:
       break;
   }
+}
 
 void dance_space_reset(tap_dance_state_t *state, void *user_data) {
   switch (TD_SPACE_tap_state.state) {
@@ -750,6 +751,7 @@ void dance_enter_finished(tap_dance_state_t *state, void *user_data) {
     default:
       break;
   }
+}
 
 void dance_enter_reset(tap_dance_state_t *state, void *user_data) {
   switch (TD_ENTER_tap_state.state) {
