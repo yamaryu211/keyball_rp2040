@@ -138,9 +138,9 @@ static void add_scroll_div(int8_t delta) {
 }
 
 // マウスカーソルの挙動の調整用
-static uint16_t movement_size_of(report_mouse_t *rep) {
-    return abs(rep->x) + abs(rep->y);
-}
+// static uint16_t movement_size_of(report_mouse_t *rep) {
+//     return abs(rep->x) + abs(rep->y);
+// }
 
 
 //////////////////////////////////////////////////////////////////////////////
