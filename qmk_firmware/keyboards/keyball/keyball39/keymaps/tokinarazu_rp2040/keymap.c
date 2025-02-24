@@ -104,7 +104,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [1] = LAYOUT_universal(
     KC_ESC  , MY_MACRO_0, KC_END  , MY_MACRO_2, MY_MACRO_5 ,                                      SELWORD  , KC_HOME  , KC_UP    , KC_END   , XXXXXXX  ,
     KC_HOME , MY_MACRO_1, KC_PGUP , MY_MACRO_3, MY_MACRO_4 ,                                      KC_BSPC  , KC_LEFT  , KC_DOWN  , KC_RGHT  , XXXXXXX  ,
-    XXXXXXX , XXXXXXX   , KC_PGDN , XXXXXXX   , ARROW ,                                           KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , KC_BTN4  ,
+    XXXXXXX , XXXXXXX   , KC_PGDN , XXXXXXX   , ARROW ,                                           KC_DEL   , KC_BTN1  , KC_BTN3  , KC_BTN2  , XXXXXXX  ,
     KC_LCTL , _______   , _______ , _______   , _______  , _______  ,                             QK_REP   , _______  , _______  , _______  , _______  , KC_MUTE
   ),
 
@@ -168,6 +168,9 @@ color.h
 layer_state_t layer_state_set_user(layer_state_t state) {
     // Auto enable scroll mode when the highest layer is 3
     keyball_set_scroll_mode(get_highest_layer(state) == 3);
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+    keyball_keep_auto_mouse_layer_if_needed(state);
+#endif
 
     uint8_t layer = biton32(state);
     switch (layer) {
