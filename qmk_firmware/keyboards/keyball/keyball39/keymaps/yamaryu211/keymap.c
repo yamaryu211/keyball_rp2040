@@ -788,6 +788,9 @@ void dance_bs_finished(tap_dance_state_t *state, void *user_data) {
       register_code(KC_LCTL);
       register_code(KC_BSPC);
       break;
+    case TD_DOUBLE_SINGLE_TAP:
+      register_code(KC_BSPC);
+      break;
     default:
       break;
   }
@@ -803,6 +806,9 @@ void dance_bs_reset(tap_dance_state_t *state, void *user_data) {
       break;
     case TD_DOUBLE_TAP:
       unregister_code(KC_LCTL);
+      unregister_code(KC_BSPC);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
       unregister_code(KC_BSPC);
       break;
     default:
@@ -830,6 +836,9 @@ void dance_ctrl_finished(tap_dance_state_t *state, void *user_data) {
       register_code(KC_LCTL);
       register_code(KC_DEL);
       break;
+    case TD_DOUBLE_SINGLE_TAP:
+      register_code(KC_DEL);
+      break;
     default:
       break;
   }
@@ -845,6 +854,9 @@ void dance_ctrl_reset(tap_dance_state_t *state, void *user_data) {
       break;
     case TD_DOUBLE_TAP:
       unregister_code(KC_LCTL);
+      unregister_code(KC_DEL);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
       unregister_code(KC_DEL);
       break;
     default:
