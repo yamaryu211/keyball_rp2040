@@ -138,9 +138,9 @@ static void add_scroll_div(int8_t delta) {
 }
 
 // マウスカーソルの挙動の調整用
-// static uint16_t movement_size_of(report_mouse_t *rep) {
-//     return abs(rep->x) + abs(rep->y);
-// }
+static int16_t movement_size_of(report_mouse_t *rep) {
+    return abs(rep->x) + abs(rep->y);
+}
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -327,10 +327,6 @@ static uint16_t get_auto_mouse_keep_time(void) {
 #else
         return keyball_get_auto_mouse_timeout();
 #endif
-}
-
-static int16_t movement_size_of(report_mouse_t *rep) {
-    return abs(rep->x) + abs(rep->y);
 }
 
 static void extend_auto_mouse_timeout_by_motion(report_mouse_t *rep) {
