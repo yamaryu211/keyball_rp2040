@@ -40,8 +40,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define AUTO_MOUSE_DEFAULT_LAYER 5
 #define AUTO_MOUSE_LAYER_KEEP_TIME 30000 // マウスレイヤーを維持する時間を30秒に設定
 
-#define TAPPING_TERM 180
+#define TAPPING_TERM 220
 #define PERMISSIVE_HOLD
+
 // タップ→ホールドしたときにタップしたキーコードを連続送信するための待受時間
 #define QUICK_TAP_TERM 150
 #define QUICK_TAP_TERM_PER_KEY

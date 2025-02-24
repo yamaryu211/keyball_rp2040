@@ -136,10 +136,10 @@ void dance_ctrl_reset(tap_dance_state_t *state, void *user_data);
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   // keymap for default (yamaryu211)
   [_WINDOWS] = LAYOUT_universal(
-    TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
-    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , TD(TD_MINUS)    ,
-    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
-    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , TD(TD_CTRL)    , TD(TD_SPACE)   , TD(TD_ENTER)  , TD(TD_BS)     , _______         , _______     , _______        , LT(3, KC_LNG1)
+    TD(TD_Q)       , KC_W         , KC_E           , KC_R           , KC_T           ,                                  KC_Y           , KC_U        , KC_I        , KC_O           , KC_P            ,
+    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)    , KC_G           ,                                  KC_H           , LT(1, KC_J) , LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINUS),
+    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V           , KC_B           ,                                  KC_N           , KC_M        , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT        , LCTL_T(KC_DEL) , LSFT_T(KC_SPACE) , LT(1,KC_ENT), LT(2, KC_BSPC) , _______     , _______     , _______        , LT(3, KC_LNG1)
   ),
 
   [_LOWER_W] = LAYOUT_universal(
@@ -162,18 +162,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_F12  , LCTL(KC_F1) , KC_F2   , KC_F3   , KC_NO   ,                     KC_NO        , LALT(KC_LEFT)   , LALT(KC_RIGHT) , KC_NO      , KC_NO     ,
     _______ , _______     , _______ , _______ , _______ , _______ , _______ , _______      , _______         , _______        , _______    , _______
   ),
-  // 追加レイヤーの定義
   [_KEYBOARD_W] = LAYOUT_universal(
     KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRID , KC_BRIU , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
-    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   ,  EE_CLR ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
   ),
   [_MAC] = LAYOUT_universal(
-    TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y          , KC_U            , KC_I        , KC_O           , KC_P            ,
-    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H          , LT(1, KC_J)     , LT(2, KC_K) , LALT_T(KC_L)   , TD(TD_MINUS)    ,
-    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N          , KC_M            , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
-    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , TD(TD_CTRL)    , TD(TD_SPACE)   , TD(TD_ENTER)  , TD(TD_BS)     , _______         , _______     , _______        , LT(3, KC_LNG1)
+    TD(TD_Q)       , KC_W         , KC_E           , KC_R            , KC_T           ,                                  KC_Y           , KC_U       , KC_I        , KC_O           , KC_P            ,
+    LCTL_T(KC_A)   , LALT_T(KC_S) , LT(2, KC_D)    , LT(1, KC_F)     , KC_G           ,                                  KC_H           , LT(1, KC_J), LT(2, KC_K) , LALT_T(KC_L)   , LCTL_T(KC_MINUS),
+    LSFT_T(KC_Z)   , LGUI_T(KC_X) , KC_C           , KC_V            , KC_B           ,                                  KC_N           , KC_M       , KC_COMM     , LGUI_T(KC_DOT) , LSFT_T(KC_SLSH) ,
+    LT(1, KC_LNG2) , KC_ESC       , LGUI_T(KC_TAB) , KC_LALT         , LCTL_T(KC_DEL) , LSFT_T(KC_SPACE), LT(1,KC_ENT) , LT(2, KC_BSPC) , _______    , _______     , _______        , LT(3, KC_LNG1)
   ),
 
   [_LOWER_M] = LAYOUT_universal(
@@ -200,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_KEYBOARD_M] = LAYOUT_universal(
     KC_NO    , KC_NO    , KC_NO   , DT_PRNT , SSNP_VRT ,                     KC_BRID , KC_BRIU , KC_MUTE , KC_VOLD , KC_VOLU ,
     CPI_I100 , SCRL_DVI , AML_I50 , DT_UP   , SSNP_HOR ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
-    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   , _______ ,
+    CPI_D100 , SCRL_DVD , AML_D50 , DT_DOWN , SSNP_FRE ,                     KC_NO   , KC_NO   , KC_NO   , KC_NO   ,  EE_CLR ,
     _______  , _______  , _______ , _______ , _______  , _______ , _______ , _______ , _______ , _______ , _______ , _______  
   ),
 };
@@ -788,6 +787,9 @@ void dance_bs_finished(tap_dance_state_t *state, void *user_data) {
       register_code(KC_LCTL);
       register_code(KC_BSPC);
       break;
+    case TD_DOUBLE_SINGLE_TAP:
+      register_code(KC_BSPC);
+      break;
     default:
       break;
   }
@@ -803,6 +805,9 @@ void dance_bs_reset(tap_dance_state_t *state, void *user_data) {
       break;
     case TD_DOUBLE_TAP:
       unregister_code(KC_LCTL);
+      unregister_code(KC_BSPC);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
       unregister_code(KC_BSPC);
       break;
     default:
@@ -830,6 +835,9 @@ void dance_ctrl_finished(tap_dance_state_t *state, void *user_data) {
       register_code(KC_LCTL);
       register_code(KC_DEL);
       break;
+    case TD_DOUBLE_SINGLE_TAP:
+      register_code(KC_DEL);
+      break;
     default:
       break;
   }
@@ -845,6 +853,9 @@ void dance_ctrl_reset(tap_dance_state_t *state, void *user_data) {
       break;
     case TD_DOUBLE_TAP:
       unregister_code(KC_LCTL);
+      unregister_code(KC_DEL);
+      break;
+    case TD_DOUBLE_SINGLE_TAP:
       unregister_code(KC_DEL);
       break;
     default:
