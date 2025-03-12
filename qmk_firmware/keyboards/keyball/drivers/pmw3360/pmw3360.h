@@ -18,7 +18,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 #include <stdint.h>
+#include "quantum.h"
 #include "spi_master.h"
+
+// New SPI interface definitions for QMK 0.27.13
+#ifndef PMW3360_SPI_DIVISOR
+#    define PMW3360_SPI_DIVISOR 2
+#endif
+
+#ifndef PMW3360_SPI_MODE
+#    define PMW3360_SPI_MODE 3
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 // Configurations

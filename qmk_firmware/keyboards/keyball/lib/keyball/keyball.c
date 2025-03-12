@@ -171,13 +171,20 @@ void pointing_device_driver_init(void) {
     }
 }
 
+#if defined(POINTING_DEVICE_ENABLE)
+// Support for the new pointing device API in QMK 0.27.13
+void pointing_device_driver_init(void) {
+    // Initialization already handled in keyboard_pre_init_kb
+}
+
 uint16_t pointing_device_driver_get_cpi(void) {
-    return keyball_get_cpi();
+    return (keyball_get_cpi() + 1) * 100;  // Convert internal CPI value to actual CPI
 }
 
 void pointing_device_driver_set_cpi(uint16_t cpi) {
-    keyball_set_cpi(cpi);
+    keyball_set_cpi((cpi / 100) - 1);  // Convert actual CPI to internal value
 }
+#endif
 
 static void adjust_mouse_speed(report_mouse_t *r) {
     uint16_t movement_size = movement_size_of(r);

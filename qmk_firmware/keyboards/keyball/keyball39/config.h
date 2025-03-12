@@ -31,6 +31,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define SOFT_SERIAL_PIN         GP1
 #define SPLIT_HAND_MATRIX_GRID  GP27, GP9
 #define SPLIT_HAND_MATRIX_GRID_LOW_IS_LEFT
+
+// USB Configuration for new async endpoints
+#define USB_ENDPOINTS_MAX 8
+#define USB_POLLING_INTERVAL_MS 1
 //#define SPLIT_USB_DETECT
 //#define SPLIT_USB_TIMEOUT       500
 
@@ -74,10 +78,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define LAYER_STATE_8BIT
 #endif
 
+// SPI Configuration for PMW3360
 #define SPI_DRIVER SPID0
 #define SPI_SCK_PIN GP22
 #define SPI_MISO_PIN GP20
 #define SPI_MOSI_PIN GP23
+
+// Pointing Device Configuration
+#define POINTING_DEVICE_ROTATION_90
+#define POINTING_DEVICE_TASK_THROTTLE_MS 1  // Improved responsiveness for QMK 0.27.13
+
+#ifndef POINTING_DEVICE_DEBUG
+#    define POINTING_DEVICE_DEBUG FALSE
+#endif
+
+// PMW3360 Settings for QMK 0.27.13
+#define PMW3360_CS_PIN GP21
+#define PMW3360_CLOCK_SPEED 2000000
+#define PMW3360_SPI_DIVISOR 2
+#define PMW3360_SPI_LSBFIRST false
+
+// Pointing Device Auto Mouse Settings
+#ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
+#    define AUTO_MOUSE_DEFAULT_LAYER 2
+#endif
 
 /* define RP2040 boot用 */
 #define RP2040_BOOTLOADER_DOUBLE_TAP_RESET // Activates the double-tap behavior

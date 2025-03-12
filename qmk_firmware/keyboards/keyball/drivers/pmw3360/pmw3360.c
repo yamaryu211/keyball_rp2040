@@ -22,14 +22,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "srom_0x04.c"
 #include "srom_0x81.c"
 
-#define PMW3360_SPI_MODE 3
-#define PMW3360_SPI_DIVISOR 64
-#define PMW3360_CLOCKS 2000000
+// SPI configuration moved to pmw3360.h
+#ifndef PMW3360_CLOCK_SPEED
+#    define PMW3360_CLOCK_SPEED 2000000
+#endif
 
 static bool motion_bursting = false;
 
 bool pmw3360_spi_start(void) {
+    static bool is_initialized = false;
+    if (!is_initialized) {
+        spi_init();
+        is_initialized = true;
+    }
     return spi_start(PMW3360_NCS_PIN, false, PMW3360_SPI_MODE, PMW3360_SPI_DIVISOR);
+}
+
+static inline void pmw3360_spi_init(void) {
+    static bool is_initialized = false;
+    if (!is_initialized) {
+        spi_init();
+        is_initialized = true;
+    }
 }
 
 uint8_t pmw3360_reg_read(uint8_t addr) {
@@ -130,25 +144,42 @@ bool pmw3360_motion_burst(pmw3360_motion_t *d) {
 }
 
 bool pmw3360_init(void) {
-    spi_init();
+    // Initialize SPI
+    pmw3360_spi_init();
+    
+    // Configure chip select pin
     setPinOutput(PMW3360_NCS_PIN);
-    // reboot
-    pmw3360_spi_start();
+    writePinHigh(PMW3360_NCS_PIN);
+    
+    // Power up reset
     pmw3360_reg_write(pmw3360_Power_Up_Reset, 0x5a);
     wait_ms(50);
-    // read five registers of motion and discard those values
-    pmw3360_reg_read(pmw3360_Motion);
-    pmw3360_reg_read(pmw3360_Delta_X_L);
-    pmw3360_reg_read(pmw3360_Delta_X_H);
-    pmw3360_reg_read(pmw3360_Delta_Y_L);
-    pmw3360_reg_read(pmw3360_Delta_Y_H);
-    // configuration
+
+    // Read and discard initial values
+    uint8_t tmp;
+    tmp = pmw3360_reg_read(pmw3360_Motion);
+    tmp = pmw3360_reg_read(pmw3360_Delta_X_L);
+    tmp = pmw3360_reg_read(pmw3360_Delta_X_H);
+    tmp = pmw3360_reg_read(pmw3360_Delta_Y_L);
+    tmp = pmw3360_reg_read(pmw3360_Delta_Y_H);
+    (void)tmp; // Prevent unused variable warning
+
+    // Basic configuration
     pmw3360_reg_write(pmw3360_Config2, 0x00);
-    // check product ID and revision ID
+
+    // Verify chip ID
     uint8_t pid = pmw3360_reg_read(pmw3360_Product_ID);
     uint8_t rev = pmw3360_reg_read(pmw3360_Revision_ID);
+    bool success = (pid == 0x42 && rev == 0x01);
+
+    if (success) {
+        // Set initial CPI
+        pmw3360_cpi_set(0); // This will set to default CPI
+        wait_ms(10);
+    }
+
     spi_stop();
-    return pid == 0x42 && rev == 0x01;
+    return success;
 }
 
 uint8_t pmw3360_srom_id = 0;
