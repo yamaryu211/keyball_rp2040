@@ -7,17 +7,19 @@ BOOTLOADER = rp2040
 # LTO_ENABLE = yes
 
 # Build Options
-BOOTMAGIC_ENABLE = no       # Enable Bootmagic Lite
-EXTRAKEY_ENABLE = yes        # Audio control and System control
-CONSOLE_ENABLE = no         # Console for debug
+BOOTMAGIC_ENABLE = yes      # Enable Bootmagic Lite
+MOUSEKEY_ENABLE = yes       # Mouse keys
+EXTRAKEY_ENABLE = yes       # Audio control and System control
+CONSOLE_ENABLE = yes        # Console for debug
 COMMAND_ENABLE = no         # Commands for debug and configuration
-NKRO_ENABLE = no            # Enable N-Key Rollover
+NKRO_ENABLE = yes           # Enable N-Key Rollover
 BACKLIGHT_ENABLE = no       # Enable keyboard backlight functionality
 AUDIO_ENABLE = no           # Audio output
 
 # Keyball39 is split keyboard.
 SPLIT_KEYBOARD = yes
 
+# Driver settings
 WS2812_DRIVER = vendor
 SERIAL_DRIVER = vendor
 
@@ -27,11 +29,8 @@ POINTING_DEVICE_DRIVER = custom
 SRC += drivers/pmw3360/pmw3360.c
 QUANTUM_LIB_SRC += spi_master.c # Optical sensor use SPI to communicate
 
-# This is unnecessary for processing KC_MS_BTN*.
-MOUSEKEY_ENABLE = no
-
 # Enabled only one of RGBLIGHT and RGB_MATRIX if necessary.
-RGBLIGHT_ENABLE = no        # Enable RGBLIGHT
+RGBLIGHT_ENABLE = yes       # Enable keyboard RGB underglow
 RGB_MATRIX_ENABLE = no      # Enable RGB_MATRIX (not work yet)
 RGB_MATRIX_DRIVER = ws2812
 
@@ -48,3 +47,10 @@ SRC += lib/keyball/keyball.c
 # Disable other features to squeeze firmware size
 SPACE_CADET_ENABLE = no
 MAGIC_ENABLE = no
+
+# RP2040特有の設定
+ALLOW_WARNINGS = yes
+PICO_INTRINSICS_ENABLED = no
+
+# デバッグ設定
+DEBUG_MATRIX_SCAN_RATE_ENABLE = yes

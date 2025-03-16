@@ -14,8 +14,22 @@
     "ws2812": {
       "driver": "vendor"
     },
+    "features": {
+        "bootmagic": true,
+        "command": false,
+        "console": false,
+        "extrakey": true,
+        "mousekey": true,
+        "nkro": true,
+        "pointing_device": true,
+        "rgblight": true,
+        "split": true
+    },
     "split": {
-      "enabled": true
+      "enabled": true,
+      "transport": {
+        "protocol": "serial"
+      }
     },
     "layout_aliases": {
         "LAYOUT": "LAYOUT_right_ball",

@@ -91,3 +91,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 # define SPLIT_USB_TIMEOUT 5000 // ミリ秒
 #define SPLIT_USB_TIMEOUT_POLL 25
 //#define USB_VBUS_PIN GP24 // USB VBUSのピンを指定
+
+// デバッグ情報を有効化
+// #define CONSOLE_ENABLE
+// #define DEBUG_MATRIX_SCAN_RATE

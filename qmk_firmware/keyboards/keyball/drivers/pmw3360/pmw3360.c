@@ -29,7 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 static bool motion_bursting = false;
 
 bool pmw3360_spi_start(void) {
-    return spi_start(PMW3360_NCS_PIN, false, PMW3360_SPI_MODE, PMW3360_SPI_DIVISOR);
+    // QMK 0.27.13のSPI APIに対応
+    spi_start(PMW3360_NCS_PIN, false, PMW3360_SPI_MODE, PMW3360_SPI_DIVISOR);
+    return true;
 }
 
 uint8_t pmw3360_reg_read(uint8_t addr) {
@@ -52,9 +54,8 @@ void pmw3360_reg_write(uint8_t addr, uint8_t data) {
     pmw3360_spi_start();
     spi_write(addr | 0x80);
     spi_write(data);
-    wait_us(35);
     spi_stop();
-    wait_us(145);
+    wait_us(120);
 }
 
 uint8_t pmw3360_cpi_get(void) {
@@ -130,24 +131,34 @@ bool pmw3360_motion_burst(pmw3360_motion_t *d) {
 }
 
 bool pmw3360_init(void) {
-    spi_init();
+    // NCSピンの設定
     setPinOutput(PMW3360_NCS_PIN);
+    writePinHigh(PMW3360_NCS_PIN);
+    
+    // SPIの初期化を明示的に行う
+    spi_init();
+    
     // reboot
-    pmw3360_spi_start();
     pmw3360_reg_write(pmw3360_Power_Up_Reset, 0x5a);
     wait_ms(50);
+    
     // read five registers of motion and discard those values
     pmw3360_reg_read(pmw3360_Motion);
     pmw3360_reg_read(pmw3360_Delta_X_L);
     pmw3360_reg_read(pmw3360_Delta_X_H);
     pmw3360_reg_read(pmw3360_Delta_Y_L);
     pmw3360_reg_read(pmw3360_Delta_Y_H);
+    
     // configuration
     pmw3360_reg_write(pmw3360_Config2, 0x00);
+    
     // check product ID and revision ID
     uint8_t pid = pmw3360_reg_read(pmw3360_Product_ID);
     uint8_t rev = pmw3360_reg_read(pmw3360_Revision_ID);
-    spi_stop();
+    
+    // SROMのアップロード
+    pmw3360_srom_upload(pmw3360_srom_0x04);
+    
     return pid == 0x42 && rev == 0x01;
 }
 
